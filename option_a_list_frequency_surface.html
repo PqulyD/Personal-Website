@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Option A List Frequency Surface</title>
+  <script src="plotly-local.js"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      background: #0b1020;
+      color: #f3f6ff;
+    }
+    header {
+      padding: 16px 20px;
+      background: #0f1633;
+      border-bottom: 1px solid #23305a;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .wrap {
+      padding: 16px 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .card {
+      background: #0f1633;
+      border: 1px solid #23305a;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    label {
+      font-size: 0.95rem;
+    }
+    select, button, input[type=file] {
+      background: #101a3f;
+      color: #e6ecff;
+      border: 1px solid #2c3f7a;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-top: 0.4rem;
+    }
+    button {
+      cursor: pointer;
+    }
+    .hint {
+      font-size: 0.9rem;
+      color: #b8c4ff;
+    }
+    #chart {
+      height: 72vh;
+      min-height: 480px;
+    }
+    .footer {
+      color: #9fb0e0;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      margin-left: 6px;
+    }
+    .b1 {
+      background: #1f62ff33;
+      border: 1px solid #2b6bff;
+    }
+    .b2 {
+      background: #ff2e2e33;
+      border: 1px solid #ff4d4d;
+    }
+    .b3 {
+      background: #2bbb2b33;
+      border: 1px solid #36ce36;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Interactive 3D Surface: List Tier x Pick Frequency -> Performance
+      <span class="badge b1">List 1: Blue</span>
+      <span class="badge b2">List 2: Red</span>
+      <span class="badge b3">List 3: Green</span>
+    </h1>
+  </header>
+
+  <div class="wrap">
+    <div class="controls">
+      <div class="card">
+        <label for="file">Upload CSV (columns: <b>Player,List,Frequency,Goals</b>)</label><br>
+        <input id="file" type="file" accept=".csv" />
+      </div>
+      <div class="card">
+        <label for="metric">Z-axis metric</label><br>
+        <select id="metric">
+          <option value="ratio" selected>Success ratio (Goals / Picks)</option>
+          <option value="g10">Goals per 10 picks</option>
+          <option value="goals">Total goals</option>
+        </select>
+      </div>
+      <div class="card">
+        <button id="demo">Load demo data</button>
+      </div>
+    </div>
+
+    <div class="hint">Tip: Bobby McMann is automatically aggregated into <b>List 2</b> if he appears multiple times. Duplicate players are merged before plotting.</div>
+
+    <div id="chart"></div>
+
+    <div class="footer">
+      Buckets used for frequency: <b>1</b>, <b>2-3</b>, <b>4-5</b>, <b>6+</b>.
+      The surface color follows list tier and the Z-axis follows the selected performance metric.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const chartEl = document.getElementById('chart');
+      const metricEl = document.getElementById('metric');
+      const fileEl = document.getElementById('file');
+      const demoBtn = document.getElementById('demo');
+      let currentData = [];
+
+      const bucketDefs = [
+        { id: 1, test: function (f) { return f === 1; } },
+        { id: 2, test: function (f) { return f === 2 || f === 3; } },
+        { id: 3, test: function (f) { return f === 4 || f === 5; } },
+        { id: 4, test: function (f) { return f >= 6; } }
+      ];
+
+      const listToColorCode = { 1: 0.0, 2: 0.5, 3: 1.0 };
+      const colorScale = [
+        [0.0, '#2b6bff'],
+        [0.0, '#2b6bff'],
+        [0.5, '#ff4d4d'],
+        [0.5, '#ff4d4d'],
+        [1.0, '#36ce36'],
+        [1.0, '#36ce36']
+      ];
+
+      function parseCSV(text) {
+        const rows = [];
+        const lines = text.replace(/\r/g, '').split('\n').filter(Boolean);
+        if (!lines.length) return rows;
+
+        function splitCSVLine(line) {
+          const parts = [];
+          let current = '';
+          let inQuotes = false;
+
+          for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"') {
+              if (inQuotes && line[i + 1] === '"') {
+                current += '"';
+                i++;
+              } else {
+                inQuotes = !inQuotes;
+              }
+            } else if (char === ',' && !inQuotes) {
+              parts.push(current.trim());
+              current = '';
+            } else {
+              current += char;
+            }
+          }
+
+          parts.push(current.trim());
+          return parts;
+        }
+
+        const headers = splitCSVLine(lines[0]).map(function (h) {
+          return h.replace(/^"|"$/g, '').trim();
+        });
+
+        for (let i = 1; i < lines.length; i++) {
+          const values = splitCSVLine(lines[i]);
+          if (!values.length) continue;
+          const row = {};
+          for (let j = 0; j < headers.length; j++) {
+            row[headers[j]] = (values[j] || '').replace(/^"|"$/g, '').trim();
+          }
+          rows.push(row);
+        }
+
+        return rows;
+      }
+
+      function normalizeRows(rows) {
+        const map = new Map();
+
+        for (const row of rows) {
+          const name = String(row.Player || row.player || '').trim();
+          if (!name) continue;
+
+          let list = parseInt(row.List || row.list || row.Tier || 0, 10);
+          let freq = parseInt(row.Frequency || row.frequency || row.Picks || 0, 10);
+          let goals = parseInt(row.Goals || row.goals || 0, 10);
+
+          if (name.toLowerCase() === 'bobby mcmann') list = 2;
+
+          const key = name.toLowerCase();
+          const prev = map.get(key);
+
+          if (prev) {
+            map.set(key, {
+              name: name,
+              list: (prev.list === 2 || list === 2) ? 2 : prev.list,
+              freq: (prev.freq || 0) + (isFinite(freq) ? freq : 0),
+              goals: (prev.goals || 0) + (isFinite(goals) ? goals : 0)
+            });
+          } else {
+            map.set(key, {
+              name: name,
+              list: [1, 2, 3].includes(list) ? list : 3,
+              freq: isFinite(freq) ? freq : 0,
+              goals: isFinite(goals) ? goals : 0
+            });
+          }
+        }
+
+        return Array.from(map.values());
+      }
+
+      function bucketIdFor(freq) {
+        for (const bucket of bucketDefs) {
+          if (bucket.test(freq)) return bucket.id;
+        }
+        return null;
+      }
+
+      function pivotByListBucket(items) {
+        const cell = {};
+
+        for (const item of items) {
+          const bucket = bucketIdFor(item.freq);
+          if (!bucket) continue;
+
+          const key = item.list + '-' + bucket;
+          if (!cell[key]) {
+            cell[key] = { sumFreq: 0, sumGoals: 0 };
+          }
+
+          cell[key].sumFreq += item.freq;
+          cell[key].sumGoals += item.goals;
+        }
+
+        return cell;
+      }
+
+      function computeZ(cell, metric) {
+        const X = [1, 2, 3];
+        const Y = [1, 2, 3, 4];
+        const Z = Y.map(function () { return X.map(function () { return null; }); });
+        const S = Y.map(function () { return X.map(function () { return null; }); });
+
+        for (let yi = 0; yi < Y.length; yi++) {
+          for (let xi = 0; xi < X.length; xi++) {
+            const key = X[xi] + '-' + Y[yi];
+            const value = cell[key];
+            let z = null;
+
+            if (value) {
+              if (metric === 'ratio') {
+                z = value.sumFreq > 0 ? value.sumGoals / value.sumFreq : null;
+              } else if (metric === 'g10') {
+                z = value.sumFreq > 0 ? (10 * value.sumGoals) / value.sumFreq : null;
+              } else if (metric === 'goals') {
+                z = value.sumGoals;
+              }
+            }
+
+            Z[yi][xi] = z;
+            S[yi][xi] = listToColorCode[X[xi]];
+          }
+        }
+
+        return { Z: Z, S: S };
+      }
+
+      function render(items) {
+        const pivot = pivotByListBucket(items);
+        const result = computeZ(pivot, metricEl.value);
+
+        Plotly.newPlot(
+          chartEl,
+          [{
+            type: 'surface',
+            x: [1, 2, 3],
+            y: [1, 2, 3, 4],
+            z: result.Z,
+            surfacecolor: result.S,
+            colorscale: colorScale,
+            showscale: false,
+            hovertemplate: 'List: %{x}<br>Freq bucket: %{y}<br>Z: %{z:.3f}<extra></extra>',
+            contours: {
+              z: {
+                show: true,
+                usecolormap: false,
+                highlightcolor: '#ffffff',
+                project: { z: true }
+              }
+            }
+          }],
+          {
+            paper_bgcolor: '#0b1020',
+            plot_bgcolor: '#0b1020',
+            title: 'Surface: List Tier x Frequency -> ' + metricEl.options[metricEl.selectedIndex].text,
+            margin: { l: 0, r: 0, t: 50, b: 0 },
+            scene: {
+              xaxis: {
+                title: 'List Tier',
+                tickmode: 'array',
+                tickvals: [1, 2, 3],
+                ticktext: ['List 1', 'List 2', 'List 3'],
+                backgroundcolor: '#0f1633',
+                gridcolor: '#23305a',
+                zerolinecolor: '#23305a',
+                color: '#dbe5ff'
+              },
+              yaxis: {
+                title: 'Pick Frequency (bucketed)',
+                tickmode: 'array',
+                tickvals: [1, 2, 3, 4],
+                ticktext: ['1', '2-3', '4-5', '6+'],
+                backgroundcolor: '#0f1633',
+                gridcolor: '#23305a',
+                zerolinecolor: '#23305a',
+                color: '#dbe5ff'
+              },
+              zaxis: {
+                title: 'Performance',
+                backgroundcolor: '#0f1633',
+                gridcolor: '#23305a',
+                zerolinecolor: '#23305a',
+                color: '#dbe5ff'
+              }
+            }
+          },
+          { displaylogo: false, responsive: true }
+        );
+      }
+
+      function getDemo() {
+        return [
+          { Player: 'Cole Caufield', List: 1, Frequency: 5, Goals: 5 },
+          { Player: 'David Pastrnak', List: 1, Frequency: 6, Goals: 4 },
+          { Player: 'Connor McDavid', List: 1, Frequency: 3, Goals: 0 },
+          { Player: 'Cutter Gauthier', List: 2, Frequency: 3, Goals: 3 },
+          { Player: 'Evan Bouchard', List: 2, Frequency: 8, Goals: 2 },
+          { Player: "Drew O'Connor", List: 3, Frequency: 3, Goals: 2 },
+          { Player: 'Pavel Dorofeyev', List: 3, Frequency: 4, Goals: 4 },
+          { Player: 'Bobby McMann', List: 2, Frequency: 2, Goals: 0 }
+        ];
+      }
+
+      fileEl.addEventListener('change', function (event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (loadEvent) {
+          const text = String(loadEvent.target.result || '');
+          currentData = normalizeRows(parseCSV(text));
+          render(currentData);
+        };
+        reader.readAsText(file);
+      });
+
+      metricEl.addEventListener('change', function () {
+        if (currentData.length) render(currentData);
+      });
+
+      demoBtn.addEventListener('click', function () {
+        currentData = normalizeRows(getDemo());
+        render(currentData);
+      });
+
+      Plotly.newPlot(
+        chartEl,
+        [{
+          type: 'surface',
+          x: [1, 2, 3],
+          y: [1, 2, 3, 4],
+          z: [[null, null, null], [null, null, null], [null, null, null], [null, null, null]],
+          showscale: false
+        }],
+        {
+          paper_bgcolor: '#0b1020',
+          plot_bgcolor: '#0b1020',
+          title: 'Surface: Load your CSV to render',
+          margin: { l: 0, r: 0, t: 50, b: 0 },
+          scene: {
+            xaxis: {
+              title: 'List Tier',
+              tickmode: 'array',
+              tickvals: [1, 2, 3],
+              ticktext: ['List 1', 'List 2', 'List 3'],
+              backgroundcolor: '#0f1633',
+              gridcolor: '#23305a',
+              zerolinecolor: '#23305a',
+              color: '#dbe5ff'
+            },
+            yaxis: {
+              title: 'Pick Frequency (bucketed)',
+              tickmode: 'array',
+              tickvals: [1, 2, 3, 4],
+              ticktext: ['1', '2-3', '4-5', '6+'],
+              backgroundcolor: '#0f1633',
+              gridcolor: '#23305a',
+              zerolinecolor: '#23305a',
+              color: '#dbe5ff'
+            },
+            zaxis: {
+              title: 'Performance',
+              backgroundcolor: '#0f1633',
+              gridcolor: '#23305a',
+              zerolinecolor: '#23305a',
+              color: '#dbe5ff'
+            }
+          }
+        },
+        { displaylogo: false, responsive: true }
+      );
+    })();
+  </script>
+</body>
+</html>
