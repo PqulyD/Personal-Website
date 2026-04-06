@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumonia Detection Neural Network</title>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .top-nav {
+            max-width: 900px;
+            margin: 0 auto 1.25rem;
+        }
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        img {
+            width: 100%;
+            max-width: 420px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        p, li {
+            line-height: 1.7;
+        }
+        .code-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            color: var(--heading);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid var(--line);
+        }
+        .code-btn:hover {
+            background: linear-gradient(180deg, #7dc2ff, #3b82f6);
+            color: #f8fbff;
+        }
+        .code-btn svg {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+        .cnn-section {
+            margin-top: 2rem;
+        }
+        .cnn-diagram-wrap {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 16px;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            border: 1px solid var(--line-strong);
+            overflow-x: auto;
+        }
+        .cnn-diagram {
+            width: 100%;
+            min-width: 860px;
+            height: auto;
+            display: block;
+        }
+        .diagram-title {
+            margin: 0.75rem 0 0;
+            font-size: 0.95rem;
+            color: var(--text-soft);
+        }
+        .page-footer-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="back-btn" href="projects.html">Back to Projects</a>
+        <a class="back-btn" href="home.html">Home</a>
+    </div>
+
+    <div class="page">
+        <h1>Pneumonia Detection Neural Network</h1>
+       
+        <p>This project uses a convolutional neural network to classify chest X-ray images as either normal or pneumonia. In the notebook, I load the Chest X-Ray Pneumonia dataset from Kaggle, resize every image to 224 by 224 pixels, and normalize pixel values so the model can learn from a consistent input format. I also apply data augmentation to the training set with zoom, shear, and horizontal flips to improve generalization and make the model more robust to variation in the images.</p>
+        <p>The network itself is a custom CNN built with TensorFlow and Keras. It stacks four convolutional blocks with 32, 64, 128, and 256 filters, using batch normalization, ReLU activations, and max pooling to progressively extract more detailed visual features from each X-ray. After flattening the feature maps, the model passes them through a dense layer with dropout before producing a final sigmoid output for binary classification. The model is trained with the Adam optimizer and binary cross-entropy loss, and the notebook uses a learning-rate scheduler to reduce the learning rate when validation loss stops improving.</p>
+        <p>For results, the notebook trains on 5,216 training images, validates on 16 images, and evaluates on 624 held-out test images. It tracks both training and validation accuracy and loss across epochs, then measures final test performance on the separate test set. The code also includes a visualization step that shows the CNN's predicted probability for an individual chest X-ray, which makes the model's output easier to interpret. Overall, the project demonstrates a full deep learning workflow for medical image classification, from preprocessing and model design to evaluation and prediction analysis.</p>
+
+        <div class="cnn-section">
+            <a class="code-btn" href="https://github.com/PqulyD/Pneumonia-Detection-Convolution-Neural-Network/blob/main/pneumonia_cnn.ipynb" target="_blank" rel="noopener">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.68c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+                </svg>
+                <span>View Code</span>
+            </a>
+            <h2>CNN Architecture Visualization</h2>
+            <div class="cnn-diagram-wrap">
+                <svg class="cnn-diagram" viewBox="0 0 1180 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visualization of the pneumonia CNN architecture">
+                    <defs>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.35"/>
+                        </filter>
+                        <clipPath id="singleXrayClip">
+                            <rect x="20" y="145" width="135" height="110" rx="2"/>
+                        </clipPath>
+                    </defs>
+
+                    <rect x="0" y="0" width="1180" height="560" rx="18" fill="#f8fafc"/>
+
+                    <g font-family="Arial, sans-serif">
+                        <text x="590" y="50" text-anchor="middle" font-size="26" font-weight="700" fill="#0f172a">Convolution Neural Network (CNN)</text>
+
+                        <text x="90" y="120" text-anchor="middle" font-size="20" fill="#111827">Input</text>
+                        <text x="285" y="294" text-anchor="middle" font-size="18" fill="#111827">Convolution</text>
+                        <text x="285" y="318" text-anchor="middle" font-size="18" fill="#111827">+ ReLU</text>
+                        <text x="285" y="92" text-anchor="middle" font-size="16" fill="#111827">Pooling</text>
+
+                        <text x="450" y="294" text-anchor="middle" font-size="18" fill="#111827">Convolution</text>
+                        <text x="450" y="318" text-anchor="middle" font-size="18" fill="#111827">+ ReLU</text>
+                        <text x="450" y="92" text-anchor="middle" font-size="16" fill="#111827">Pooling</text>
+
+                        <text x="615" y="294" text-anchor="middle" font-size="18" fill="#111827">Convolution</text>
+                        <text x="615" y="318" text-anchor="middle" font-size="18" fill="#111827">+ ReLU</text>
+                        <text x="615" y="92" text-anchor="middle" font-size="16" fill="#111827">Pooling</text>
+
+                        <text x="750" y="392" text-anchor="middle" font-size="18" fill="#111827">Flatten</text>
+                        <text x="750" y="416" text-anchor="middle" font-size="18" fill="#111827">Layer</text>
+
+                        <text x="875" y="438" text-anchor="middle" font-size="18" fill="#111827">Fully</text>
+                        <text x="875" y="462" text-anchor="middle" font-size="18" fill="#111827">Connected</text>
+                        <text x="875" y="486" text-anchor="middle" font-size="18" fill="#111827">Layer</text>
+
+                        <text x="1048" y="128" text-anchor="middle" font-size="22" fill="#111827">Output</text>
+                        <text x="1048" y="352" text-anchor="middle" font-size="18" fill="#111827">Sigmoid</text>
+                    </g>
+
+                    <g filter="url(#shadow)">
+                        <image href="pneumonia-xray-grid.png" x="20" y="145" width="270" height="220" preserveAspectRatio="none" clip-path="url(#singleXrayClip)" />
+                        <rect x="20" y="145" width="135" height="110" rx="2" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+                    </g>
+
+                    <rect x="102" y="205" width="24" height="24" fill="none" stroke="#facc15" stroke-width="3"/>
+                    <line x1="114" y1="229" x2="114" y2="282" stroke="#111827" stroke-width="2"/>
+                    <polygon points="114,291 109,282 119,282" fill="#111827"/>
+                    <text x="114" y="304" text-anchor="middle" font-size="18" fill="#111827">Kernel</text>
+
+                    <g filter="url(#shadow)">
+                        <rect x="200" y="145" width="110" height="118" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+                        <rect x="206" y="139" width="110" height="118" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+                        <rect x="212" y="133" width="110" height="118" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+
+                        <rect x="355" y="158" width="88" height="96" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+                        <rect x="361" y="152" width="88" height="96" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+                        <rect x="367" y="146" width="88" height="96" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+
+                        <rect x="515" y="171" width="78" height="84" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+                        <rect x="521" y="165" width="78" height="84" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+                        <rect x="527" y="159" width="78" height="84" fill="#cdb79d" stroke="#57534e" stroke-width="2"/>
+
+                        <rect x="635" y="182" width="26" height="62" fill="#d9c7ac" stroke="#57534e" stroke-width="1.5"/>
+                        <rect x="645" y="176" width="26" height="62" fill="#d9c7ac" stroke="#57534e" stroke-width="1.5"/>
+                        <rect x="655" y="170" width="26" height="62" fill="#d9c7ac" stroke="#57534e" stroke-width="1.5"/>
+                        <rect x="665" y="164" width="26" height="62" fill="#d9c7ac" stroke="#57534e" stroke-width="1.5"/>
+                        <rect x="675" y="158" width="26" height="62" fill="#d9c7ac" stroke="#57534e" stroke-width="1.5"/>
+                    </g>
+
+                    <rect x="250" y="205" width="18" height="18" fill="none" stroke="#facc15" stroke-width="3"/>
+                    <rect x="404" y="213" width="18" height="18" fill="none" stroke="#facc15" stroke-width="3"/>
+                    <rect x="548" y="180" width="16" height="16" fill="none" stroke="#facc15" stroke-width="3"/>
+
+                    <g stroke="#111827" stroke-width="1.2" stroke-dasharray="4 4" fill="none" opacity="0.8">
+                        <line x1="114" y1="217" x2="200" y2="220"/>
+                        <line x1="114" y1="217" x2="200" y2="188"/>
+                        <line x1="268" y1="214" x2="355" y2="221"/>
+                        <line x1="422" y1="222" x2="515" y2="223"/>
+                        <line x1="564" y1="188" x2="635" y2="196"/>
+                        <line x1="566" y1="188" x2="740" y2="132"/>
+                        <line x1="566" y1="188" x2="740" y2="300"/>
+                    </g>
+
+                    <g filter="url(#shadow)">
+                        <rect x="740" y="122" width="18" height="200" fill="#d9c7ac" stroke="#57534e" stroke-width="1.5"/>
+                        <line x1="740" y1="142" x2="758" y2="142" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="162" x2="758" y2="162" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="182" x2="758" y2="182" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="202" x2="758" y2="202" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="222" x2="758" y2="222" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="242" x2="758" y2="242" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="262" x2="758" y2="262" stroke="#57534e" stroke-width="1"/>
+                        <line x1="740" y1="282" x2="758" y2="282" stroke="#57534e" stroke-width="1"/>
+                    </g>
+
+                    <g fill="#7dd3fc" stroke="#38bdf8" stroke-width="1">
+                        <circle cx="815" cy="92" r="8"/>
+                        <circle cx="815" cy="122" r="8"/>
+                        <circle cx="815" cy="152" r="8"/>
+                        <circle cx="815" cy="182" r="8"/>
+                        <circle cx="815" cy="212" r="8"/>
+                        <circle cx="815" cy="242" r="8"/>
+                        <circle cx="815" cy="272" r="8"/>
+                        <circle cx="815" cy="302" r="8"/>
+                        <circle cx="815" cy="332" r="8"/>
+
+                        <circle cx="885" cy="155" r="8"/>
+                        <circle cx="885" cy="205" r="8"/>
+                        <circle cx="885" cy="255" r="8"/>
+
+                        <circle cx="955" cy="185" r="8"/>
+                        <circle cx="955" cy="225" r="8"/>
+                    </g>
+
+                    <g fill="#0f172a">
+                        <circle cx="982" cy="164" r="8"/>
+                        <circle cx="982" cy="224" r="8"/>
+                    </g>
+
+                    <g stroke="#111827" stroke-width="1" opacity="0.75">
+                        <line x1="758" y1="132" x2="877" y2="155"/>
+                        <line x1="758" y1="160" x2="877" y2="205"/>
+                        <line x1="758" y1="188" x2="877" y2="255"/>
+                        <line x1="758" y1="216" x2="877" y2="155"/>
+                        <line x1="758" y1="244" x2="877" y2="205"/>
+                        <line x1="758" y1="272" x2="877" y2="255"/>
+                        <line x1="758" y1="300" x2="877" y2="205"/>
+
+                        <line x1="823" y1="92" x2="877" y2="155"/>
+                        <line x1="823" y1="122" x2="877" y2="205"/>
+                        <line x1="823" y1="152" x2="877" y2="255"/>
+                        <line x1="823" y1="182" x2="877" y2="155"/>
+                        <line x1="823" y1="212" x2="877" y2="205"/>
+                        <line x1="823" y1="242" x2="877" y2="255"/>
+                        <line x1="823" y1="272" x2="877" y2="155"/>
+                        <line x1="823" y1="302" x2="877" y2="205"/>
+                        <line x1="823" y1="332" x2="877" y2="255"/>
+
+                        <line x1="893" y1="155" x2="947" y2="185"/>
+                        <line x1="893" y1="155" x2="947" y2="225"/>
+                        <line x1="893" y1="205" x2="947" y2="185"/>
+                        <line x1="893" y1="205" x2="947" y2="225"/>
+                        <line x1="893" y1="255" x2="947" y2="185"/>
+                        <line x1="893" y1="255" x2="947" y2="225"/>
+
+                        <line x1="963" y1="185" x2="974" y2="164"/>
+                        <line x1="963" y1="225" x2="974" y2="164"/>
+                        <line x1="963" y1="185" x2="974" y2="224"/>
+                        <line x1="963" y1="225" x2="974" y2="224"/>
+                    </g>
+
+                    <g filter="url(#shadow)">
+                        <rect x="1005" y="177" width="82" height="72" rx="4" fill="#f6b26b" stroke="#92400e" stroke-width="1.5"/>
+                    </g>
+                    <g stroke="#111827" stroke-width="1.4" stroke-dasharray="4 4">
+                        <line x1="1005" y1="213" x2="1087" y2="213"/>
+                    </g>
+                    <g font-family="Arial, sans-serif">
+                        <text x="1046" y="202" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">0.18</text>
+                        <text x="1046" y="238" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">0.82</text>
+
+                        <text x="1096" y="204" font-size="16" fill="#111827">Normal</text>
+                        <text x="1096" y="240" font-size="16" fill="#111827">Pneumonia</text>
+                    </g>
+
+                    <g stroke="#111827" stroke-width="1.5" fill="none">
+                        <line x1="25" y1="500" x2="742" y2="500"/>
+                        <line x1="25" y1="500" x2="25" y2="478"/>
+                        <line x1="742" y1="500" x2="742" y2="478"/>
+
+                        <line x1="762" y1="500" x2="1008" y2="500"/>
+                        <line x1="762" y1="500" x2="762" y2="478"/>
+                        <line x1="1008" y1="500" x2="1008" y2="478"/>
+
+                        <line x1="994" y1="500" x2="1140" y2="500"/>
+                        <line x1="994" y1="500" x2="994" y2="478"/>
+                        <line x1="1140" y1="500" x2="1140" y2="478"/>
+
+                        <line x1="210" y1="438" x2="690" y2="438"/>
+                        <line x1="210" y1="434" x2="210" y2="442"/>
+                        <line x1="690" y1="434" x2="690" y2="442"/>
+                    </g>
+                    <g font-family="Arial, sans-serif" fill="#111827">
+                        <text x="450" y="454" text-anchor="middle" font-size="18">Feature Maps</text>
+                        <text x="384" y="522" text-anchor="middle" font-size="18">Feature Extraction</text>
+                        <text x="885" y="522" text-anchor="middle" font-size="18">Classification</text>
+                        <text x="1067" y="522" text-anchor="middle" font-size="18">Probability Distribution</text>
+                    </g>
+                </svg>
+              <!-- <p class="diagram-title">This version follows the reference layout more closely: the X-ray image moves through convolution and pooling stages to create feature maps, those maps are flattened, then passed through fully connected layers to produce the final class probabilities.</p> -->
+            </div>
+        </div>
+        <p class="page-footer-note">License: https://creativecommons.org/licenses/by/4.0/</p>
+        <p class="page-footer-note">Citation: https://www.cell.com/cell/fulltext/S0092-8674(18)30154-5</p>
+        <p class="page-footer-note">Data: https://data.mendeley.com/datasets/rscbjbr9sj/2</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

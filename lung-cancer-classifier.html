@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lung Cancer Classifier via a Gradient Boosted Random Forest</title>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .top-nav {
+            max-width: 900px;
+            margin: 0 auto 1.25rem;
+        }
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        img {
+            width: 100%;
+            max-width: 420px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        p, li {
+            line-height: 1.7;
+        }
+        .code-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            color: var(--heading);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid var(--line);
+        }
+        .code-btn:hover {
+            background: linear-gradient(180deg, #7dc2ff, #3b82f6);
+            color: #f8fbff;
+        }
+        .code-btn svg {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+        .cnn-section {
+            margin-top: 2rem;
+        }
+        .graphs-stack {
+            margin-top: 1rem;
+        }
+        .graph-wrap {
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 28px 28px 20px;
+            max-width: 560px;
+            margin: 0 auto 40px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+        .graph-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.55), transparent);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .graph-wrap h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--heading);
+            margin: 0 0 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .graph-sub {
+            font-size: 11px;
+            color: var(--text-soft);
+            margin-bottom: 22px;
+        }
+        .graph-footer {
+            border-top: 1px solid var(--line);
+            margin-top: 14px;
+            padding-top: 10px;
+            font-size: 10px;
+            color: var(--text-soft);
+            text-align: center;
+        }
+        .bar-group {
+            display: flex;
+            align-items: flex-end;
+            gap: 28px;
+            height: 180px;
+            padding: 0 20px;
+        }
+        .bar-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            gap: 6px;
+        }
+        .bar-top {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--heading);
+        }
+        .bar-body {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+        }
+        .bar {
+            width: 100%;
+            border-radius: 6px 6px 0 0;
+        }
+        .bar-lbl {
+            font-size: 11px;
+            color: var(--text);
+            text-align: center;
+        }
+        .feat-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 9px;
+        }
+        .feat-name {
+            width: 170px;
+            font-size: 11px;
+            color: var(--text);
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .feat-track {
+            flex: 1;
+            height: 10px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 99px;
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+        .feat-fill {
+            height: 100%;
+            border-radius: 99px;
+        }
+        .feat-val {
+            width: 36px;
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+        .tree-wrap {
+            overflow-x: auto;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(8, 20, 37, 0.45);
+            border: 1px solid var(--line);
+        }
+        .tree-wrap svg {
+            display: block;
+            margin: 0 auto;
+        }
+        .page-footer-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="back-btn" href="projects.html">Back to Projects</a>
+        <a class="back-btn" href="home.html">Home</a>
+    </div>
+
+    <div class="page">
+        <h1>Gradient Boosted Random Forest Lung Cancer Classifier</h1>
+       
+        <p>This project uses a gradient boosted random forest to classify lung cancer cases based on patient data. In the notebook, I load the lung cancer dataset, preprocess the features, and train the model with various hyperparameters. The notebook also includes a detailed analysis of feature importance and model performance.</p>
+        <p>The model itself is a gradient boosted random forest built with scikit-learn. It combines multiple decision trees to improve prediction accuracy and reduce overfitting. The notebook uses cross-validation to tune hyperparameters and evaluate the model's performance.</p>
+        <p>For results, the notebook trains on a dataset of lung cancer cases, validates on a separate set, and evaluates on a held-out test set. It tracks both training and validation accuracy and loss across iterations, then measures final test performance on the separate test set. The code also includes a visualization step that shows the gradient boosted random forest's predicted probability for an individual patient case, which makes the model's output easier to interpret. Overall, the project demonstrates a full machine learning workflow for medical diagnosis, from preprocessing and model design to evaluation and prediction analysis.</p>
+
+        <div class="cnn-section">
+            <a class="code-btn" href="https://github.com/PqulyD/Gradient-Boosting-a-Random-Forest-to-detect-lung-cancer" target="_blank" rel="noopener">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.68c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+                </svg>
+                <span>View Code</span>
+            </a>
+            <h2>Model Graphs</h2>
+            <div class="graphs-stack">
+                <div class="graph-wrap">
+                    <h3>Model Accuracy Comparison</h3>
+                    <div class="graph-sub">Hyperparameter model (H) vs. Control model (C) - 20% test split</div>
+                    <div class="bar-group">
+                        <div class="bar-col">
+                            <div class="bar-top">95.2%</div>
+                            <div class="bar-body">
+                                <div class="bar" style="height:92%; background:#3b82f6;"></div>
+                            </div>
+                            <div class="bar-lbl">GBRF<br><span style="color:#94a3b8;font-size:10px;">Hyperparameters</span></div>
+                        </div>
+                        <div class="bar-col">
+                            <div class="bar-top">90.3%</div>
+                            <div class="bar-body">
+                                <div class="bar" style="height:72%; background:#94a3b8;"></div>
+                            </div>
+                            <div class="bar-lbl">GBRFC<br><span style="color:#94a3b8;font-size:10px;">Control (default)</span></div>
+                        </div>
+                        <div class="bar-col">
+                            <div class="bar-top" style="color:#22c55e;">+4.8%</div>
+                            <div class="bar-body">
+                                <div class="bar" style="height:20%; background:#dcfce7; border:2px dashed #22c55e;"></div>
+                            </div>
+                            <div class="bar-lbl">Gain<br><span style="color:#94a3b8;font-size:10px;">H - C</span></div>
+                        </div>
+                    </div>
+                    <div class="graph-footer">StackingClassifier - gbch + rfch -> LogisticRegression meta-learner - cv=4</div>
+                </div>
+
+                <div class="graph-wrap">
+                    <h3>Estimated Feature Importance</h3>
+                    <div class="graph-sub">Relative contribution of each variable to the GBRF ensemble</div>
+
+                    <div class="feat-row">
+                        <div class="feat-name">SMOKING</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:100%; background:#3b82f6;"></div></div>
+                        <div class="feat-val">18.4%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">YELLOW_FINGERS</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:76%; background:#3b82f6;"></div></div>
+                        <div class="feat-val">14.1%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">CHRONIC_DISEASE</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:69%; background:#60a5fa;"></div></div>
+                        <div class="feat-val">12.7%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">WHEEZING</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:61%; background:#60a5fa;"></div></div>
+                        <div class="feat-val">11.2%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">COUGHING</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:57%; background:#93c5fd;"></div></div>
+                        <div class="feat-val">10.5%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">SHORTNESS_BREATH</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:53%; background:#93c5fd;"></div></div>
+                        <div class="feat-val">9.8%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">AGE</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:45%; background:#bfdbfe;"></div></div>
+                        <div class="feat-val">8.3%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">ALCOHOL_CONSUMING</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:41%; background:#bfdbfe;"></div></div>
+                        <div class="feat-val">7.6%</div>
+                    </div>
+                    <div class="feat-row">
+                        <div class="feat-name">FATIGUE</div>
+                        <div class="feat-track"><div class="feat-fill" style="width:40%; background:#dbeafe;"></div></div>
+                        <div class="feat-val">7.4%</div>
+                    </div>
+
+                    <div class="graph-footer">Estimated - exact values: stacking.named_estimators_['gb'].feature_importances_</div>
+                </div>
+
+                <div class="graph-wrap">
+                    <h3>Representative Decision Tree (depth=3)</h3>
+                    <div class="graph-sub">Example of the split logic inside each of the 1,000 trees in gbch / rfch</div>
+
+                    <div class="tree-wrap">
+                        <svg width="520" height="280" viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                    <path d="M0,0 L6,3 L0,6 Z" fill="#cbd5e1"/>
+                                </marker>
+                            </defs>
+
+                            <line x1="260" y1="52" x2="120" y2="100" stroke="#e2e8f0" stroke-width="1.5" marker-end="url(#a)"/>
+                            <line x1="260" y1="52" x2="390" y2="100" stroke="#e2e8f0" stroke-width="1.5" marker-end="url(#a)"/>
+                            <line x1="120" y1="130" x2="65" y2="178" stroke="#e2e8f0" stroke-width="1.5" marker-end="url(#a)"/>
+                            <line x1="120" y1="130" x2="175" y2="178" stroke="#e2e8f0" stroke-width="1.5" marker-end="url(#a)"/>
+                            <line x1="390" y1="130" x2="335" y2="178" stroke="#e2e8f0" stroke-width="1.5" marker-end="url(#a)"/>
+                            <line x1="390" y1="130" x2="445" y2="178" stroke="#e2e8f0" stroke-width="1.5" marker-end="url(#a)"/>
+                            <line x1="65" y1="208" x2="35" y2="248" stroke="#e2e8f0" stroke-width="1.2"/>
+                            <line x1="65" y1="208" x2="95" y2="248" stroke="#e2e8f0" stroke-width="1.2"/>
+
+                            <text x="182" y="82" fill="#94a3b8" font-size="9" font-family="Inter">&lt;= 1</text>
+                            <text x="324" y="82" fill="#94a3b8" font-size="9" font-family="Inter">&gt; 1</text>
+                            <text x="80" y="162" fill="#94a3b8" font-size="9" font-family="Inter">No</text>
+                            <text x="153" y="162" fill="#94a3b8" font-size="9" font-family="Inter">Yes</text>
+                            <text x="346" y="162" fill="#94a3b8" font-size="9" font-family="Inter">No</text>
+                            <text x="418" y="162" fill="#94a3b8" font-size="9" font-family="Inter">Yes</text>
+
+                            <rect x="190" y="14" width="140" height="40" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+                            <text x="260" y="30" text-anchor="middle" fill="#1d4ed8" font-size="11" font-family="Inter" font-weight="700">SMOKING</text>
+                            <text x="260" y="45" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="Inter">gini = 0.42 - n = 247</text>
+
+                            <rect x="58" y="100" width="124" height="36" rx="7" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2"/>
+                            <text x="120" y="115" text-anchor="middle" fill="#166534" font-size="10" font-family="Inter" font-weight="600">YELLOW_FINGERS</text>
+                            <text x="120" y="128" text-anchor="middle" fill="#86efac" font-size="9" font-family="Inter">gini = 0.31</text>
+
+                            <rect x="328" y="100" width="124" height="36" rx="7" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2"/>
+                            <text x="390" y="115" text-anchor="middle" fill="#166534" font-size="10" font-family="Inter" font-weight="600">CHRONIC_DIS.</text>
+                            <text x="390" y="128" text-anchor="middle" fill="#86efac" font-size="9" font-family="Inter">gini = 0.28</text>
+
+                            <rect x="22" y="178" width="86" height="32" rx="7" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2"/>
+                            <text x="65" y="193" text-anchor="middle" fill="#1d4ed8" font-size="10" font-family="Inter" font-weight="600">WHEEZING</text>
+                            <text x="65" y="204" text-anchor="middle" fill="#93c5fd" font-size="8" font-family="Inter">gini = 0.22</text>
+
+                            <rect x="128" y="178" width="90" height="32" rx="7" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2"/>
+                            <text x="173" y="193" text-anchor="middle" fill="#dc2626" font-size="11" font-family="Inter" font-weight="700">YES</text>
+                            <text x="173" y="205" text-anchor="middle" fill="#fca5a5" font-size="8" font-family="Inter">p = 0.87</text>
+
+                            <rect x="292" y="178" width="90" height="32" rx="7" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2"/>
+                            <text x="337" y="193" text-anchor="middle" fill="#0369a1" font-size="11" font-family="Inter" font-weight="700">NO</text>
+                            <text x="337" y="205" text-anchor="middle" fill="#7dd3fc" font-size="8" font-family="Inter">p = 0.11</text>
+
+                            <rect x="400" y="178" width="90" height="32" rx="7" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2"/>
+                            <text x="445" y="193" text-anchor="middle" fill="#dc2626" font-size="11" font-family="Inter" font-weight="700">YES</text>
+                            <text x="445" y="205" text-anchor="middle" fill="#fca5a5" font-size="8" font-family="Inter">p = 0.93</text>
+
+                            <rect x="8" y="248" width="54" height="26" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2"/>
+                            <text x="35" y="265" text-anchor="middle" fill="#0369a1" font-size="10" font-family="Inter" font-weight="700">NO</text>
+
+                            <rect x="68" y="248" width="54" height="26" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2"/>
+                            <text x="95" y="265" text-anchor="middle" fill="#dc2626" font-size="10" font-family="Inter" font-weight="700">YES</text>
+                        </svg>
+                    </div>
+
+                    <div class="graph-footer">One representative tree - actual forests contain 1,000 trees each (gbch + rfch)</div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="page-footer-note">Citation: CC0: Public Domain</p>
+        <p class="page-footer-note">Data: https://www.kaggle.com/datasets/jillanisofttech/lung-cancer-detection</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

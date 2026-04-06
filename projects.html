@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .page-header {
+            max-width: 980px;
+            margin: 0 auto 1.5rem;
+        }
+        .button-row {
+            margin-bottom: 1rem;
+        }
+        .projects-grid {
+            max-width: 980px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .project {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+        .project img {
+            width: 100%;
+            max-width: 360px;
+            height: 220px;
+            object-fit: cover;
+            margin: 0.75rem 0 1rem;
+        }
+        .project-text {
+            margin: 0.5rem 0 0;
+        }
+        .project h3 {
+            margin-bottom: 0.35rem;
+        }
+        .project-summary {
+            min-height: 5.5rem;
+        }
+        .project-btn,
+        .project-note {
+            margin-top: auto;
+        }
+        .project-btn {
+            align-self: flex-start;
+            padding: 0.72rem 1rem;
+        }
+        .project-note {
+            padding-top: 1rem;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .blackjack-project {
+            filter: grayscale(68%) saturate(42%);
+            opacity: 0.82;
+        }
+        .blackjack-preview {
+            filter: grayscale(48%) saturate(52%) brightness(0.9);
+        }
+        .project-btn.is-disabled {
+            background: linear-gradient(180deg, #7f8da3, #64748b);
+            border-color: rgba(148, 163, 184, 0.3);
+            box-shadow: none;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>Projects</h1>
+        <div class="button-row">
+            <a class="back-btn" href="home.html">Back to Home</a>
+        </div>
+    </div>
+    <div class="projects-grid">
+        <div class="project">
+            <h3>Tims Picks Predictor</h3>
+            <img src="tims-hockey-challenge.png" alt="Tims Hockey Challenge Image">
+            <p class="project-text project-summary">A sports analytics project that scores NHL goal-scoring likelihoods using player form, usage, opponent context, and recent performance data.</p>
+            <a class="project-btn" href="tims-picks-predictor.html">View Project</a>
+        </div>
+
+        <div class="project">
+            <h3>Pneumonia Detection Neural Network</h3>
+            <img src="pneumonia-xray-grid.png" alt="Pneumonia Detection Neural Network Image">
+            <p class="project-text project-summary">A medical imaging CNN built to classify chest X-rays and demonstrate the full workflow from preprocessing and model design to evaluation.</p>
+            <a class="project-btn" href="pneumonia-detection.html">View Project</a>
+        </div>
+
+        <div class="project">
+            <h3>Breast Cancer Detection Neural Network</h3>
+            <img src="https://images.journals.lww.com/ajsp/SocialThumb.00000478-201508000-00006.F1-6.jpeg" alt="Breast Cancer Detection Neural Network Image">
+            <p class="project-text project-summary">A classification project using the Wisconsin diagnostic dataset to explore neural network performance, structure, and interpretability.</p>
+            <a class="project-btn" href="breast-cancer-detection.html">View Project</a>
+        </div>
+        
+        <div class="project">
+            <h3>Random Forest Heart Disease Detector</h3>
+            <img src="https://img.freepik.com/premium-photo/senior-man-holding-his-chest-feeling-pain-suffering-from-heart-attack-outdoor-park_34840-883.jpg?w=2000" alt="Random Forest Heart Disease Detector Image">
+            <p class="project-text project-summary">A machine learning project using the Random Forest algorithm to predict heart disease risk based on patient data.</p>
+            <a class="project-btn" href="heart_disease.html">View Project</a>
+        </div>
+        
+        <div class="project">
+            <h3>Gradient Boosted Random Forest Lung Cancer Classifier</h3>
+            <img src="https://cdn.sanity.io/images/0vv8moc6/formularywatch/234c66d1244f4936282b8ecc81cc6b2054153882-5000x3750.jpg" alt="Gradient Boosted Random Forest Lung Cancer Classifier Image">
+            <p class="project-text project-summary">A machine learning project using gradient boosting with random forest to classify lung cancer cases based on patient data.</p>
+            <a class="project-btn" href="lung-cancer-classifier.html">View Project</a>
+        </div>
+
+        <div class="project blackjack-project">
+            <h3>Blackjack Neural Networks</h3>
+            <img class="blackjack-preview" src="https://casino.betmgm.com/en/blog/wp-content/uploads/2022/01/Birds-eye-view-of-a-blackjack-table-.jpg" alt="Blackjack Neural Networks Image">
+            <p class="project-text project-summary">A future project centered on blackjack strategy, expected value, simulation, and neural network-assisted decision analysis.</p>
+            <a class="project-btn is-disabled" href="#" aria-disabled="true">View Project</a>
+            <p class="project-note">Work in Progress</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

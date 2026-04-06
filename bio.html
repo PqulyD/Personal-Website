@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Bio</title>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .page-intro {
+            max-width: 760px;
+            margin: 0 auto 1.75rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .bio-text {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        .bio-text p {
+            margin: 0.5rem 0;
+        }
+        .skills-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .skill-box {
+            background: var(--blue-soft);
+            border: 1px solid var(--line-strong);
+            border-radius: 14px;
+            padding: 1rem;
+            text-align: center;
+            color: var(--text);
+            font-weight: 600;
+        }
+        .skills-note {
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+        .skills-note p {
+            margin: 0.5rem 0;
+        }
+        .education-section {
+            margin: 2.5rem 0;
+            padding: 1.75rem;
+        }
+        .education-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        .education-card {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1.25rem;
+            align-items: start;
+            padding: 1.25rem;
+            border-radius: 16px;
+            background: var(--blue-soft);
+            border: 1px solid var(--line-strong);
+        }
+        .education-logo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 22px;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .education-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 0.9rem;
+            border: 0;
+            border-radius: 0;
+        }
+        .education-placeholder {
+            padding: 0.9rem;
+            text-align: center;
+            color: var(--text-soft);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+        .education-meta {
+            margin: 0 0 0.5rem;
+            color: var(--blue);
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .education-card h3 {
+            margin: 0 0 0.4rem;
+        }
+        .education-card p {
+            margin: 0;
+        }
+        .images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+        }
+        .images img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .images img.top-align {
+            object-position: top;
+        }
+        .images img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 18px 32px rgba(14, 165, 233, 0.14);
+        }
+        .content-shell {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        @media (max-width: 680px) {
+            .education-card {
+                grid-template-columns: 1fr;
+            }
+            .education-logo {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-shell">
+    <h1>Personal Bio</h1>
+    
+    <div style="margin-bottom: 1rem;">
+        <a class="back-btn" href="home.html">Back to Home</a>
+    </div>
+    <!-- Insert your bio text here. User cannot edit this on page load; update only in HTML source. -->
+    <div class="bio-text">
+        <p>Hi, I'm Paul Mihalitsas. I am a first year Actuarial Science student at the University of Toronto.
+         
+           </p></p> My academic interest heading towards the path of machine learning, where I aim to apply LLMs and data analytics across industries like finance, medical research, and sports. In my time in university, I am hoping to learn more about advance math and coding. 
+
+           <p></p> A little about myself. I was born and raise in Hackettstown, New Jersey, where I spent my first 13 years before my family relocated to Allentown, Pennsylvania. There, I graduated as one of the top students at Saucon Valley High School; a school known for producing sharp and driven graduates. From Pennsylvania, I moved to Toronto. 
+
+            <p></p>When I'm not in the trenches of coursework or side projects, you'll find me behind a camera taking pictures, at the piano, in the gym, or out on a run. I'm equally at home on a soccer pitch, a pickleball court, skiing down a mountain, or a golf course. As for watching sports which is basically a second major. I'm all in on soccer (Chelsea and PAOK), football (fly Eagles fly ), hockey (Go Leafs Go ), basketball(Let’s Go Sixers), golf, tennis, the Olympics, and the X Games. If it's competitive, I'm watching it.
+
+            <p></p>I'm actively looking for a summer internship where I can bring my skills in data analytics, mathematics, and programming to a team doing meaningful work. If that sounds like a fit, I'd love to connect!!
+</p>
+        <!--<p>Adjust this text directly in bio.html with your current professional summary.</p>-->
+    </div>
+
+    <h1>Skills</h1>
+
+    <div class="skills-section">
+        <div class="skills-grid">
+            <div class="skill-box">Python</div>
+            <div class="skill-box">Machine Learning</div>
+            <div class="skill-box">Excel</div>
+            <div class="skill-box">Data Analytics</div>
+            <div class="skill-box">Data Modeling</div>
+            <div class="skill-box">Statistics</div>
+            <div class="skill-box">Mathematics</div>
+            <div class="skill-box">Leadership</div>
+            <div class="skill-box">Communication</div>
+            <div class="skill-box">Teamwork</div>
+            <div class="skill-box">Hard-Working</div>
+            <div class="skill-box">Researching</div>
+
+        </div>
+    </div>
+
+    <h1>Education</h1>
+
+    <div class="skills-section education-section">
+        <div class="education-grid">
+            <div class="education-card">
+                <div class="education-logo">
+                    <img src="https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_2/v1698348416/svpanthersorg/osq0uytblems69ynaymd/sv_panther_head.png" alt="High school logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="education-placeholder" style="display: none;">
+                        Add your high school logo as
+                        <span class="mono">https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_2/v1698348416/svpanthersorg/osq0uytblems69ynaymd/sv_panther_head.png</span>
+                    </div>
+                </div>
+                <div>
+                    <p class="education-meta">High School</p>
+                    <h3>Saucon Valley High School</h3>
+                    <p>In high school, I was involved in many competitive academic clubs, and athletics. I competed in Scholastic Scrimmage(Trivia Team)  for four years, earning a 6th‑place individual ranking at a Pennsylvania state tournament and captaining my team during my senior year.Throughout my high school career, my team was able to get to the semifinals twice and the quarterfinals once in the PBS‑televised tournament.I also served as Treasurer (Sophomore), Vice President (Junior), and President (Senior) of the club. I was a four‑year member of Model United Nations, serving as Club President my senior year, earning Runner‑Up Best Delegate during my Junior year, and helping our small school place 3rd overall in medal count by organization resolution workshops. Additional involvement included Varsity Debate (3 years), FBLA (2 years) with both projects advancing to state finals, and four years in Leo Club. Athletically, I played three years of Varsity Soccer and coached middle school and elementary teams, helping lead the middle school JV team to an undefeated season. I graduated as a High Honors student.</p>
+                </div>
+            </div>
+
+            <div class="education-card">
+                <div class="education-logo">
+                    <img src="https://cdn.freelogovectors.net/wp-content/uploads/2019/09/university-of-toronto-logo.png" alt="University logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="education-placeholder" style="display: none;">
+                        Add your university logo as
+                        <span class="mono">https://cdn.freelogovectors.net/wp-content/uploads/2019/09/university-of-toronto-logo.png</span>
+                    </div>
+                </div>
+                <div>
+                    <p class="education-meta">University</p>
+                    <h3>University of Toronto</h3>
+                    <p>I am currently pursuing a Bachelor of Science in Actuarial Science, with a focus on financial mathematics, data modeling, and analytical methods, and I expect to graduate in 2030. I am actively involved in the Quant Club, Actuarial Student Association, and Greek Student Association, where I engage with quantitative finance, professional development, and cultural initiatives. In my free time, I have been teaching myself how to build machine learning models and how they work, with a particular emphasis on developing neural network models. This includes building foundational machine learning programs, exploring model architecture, and strengthening the mathematical and computational intuition behind modern data‑driven systems. I am hoping to build up my skills so I can use pursue aiding in research such as working with oncologists and or developing models to find edges within the financial market. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Photos</h1>
+
+    <div class="images">
+        <!-- All photos from personal website pics zip -->
+        <img src="Screenshot_20251218-150234.png" alt="Picture of me 1">
+        <!--  <img src="IMG_20251218_163436.heic" alt="Picture of me 2"> -->
+        <img src="Screenshot_20251218-150004.png" class="top-align" alt="Picture of me 3">
+        <img src="IMG_5604.JPG" alt="Picture of me 4">
+        <img src="PXL_20250615_181944649~2.jpg" alt="Picture of me 5">
+        <img src="IMG_5687.JPG" alt="Picture of me 6">
+        <img src="Screenshot_20260326-202546.png" alt="Picture of me 7">
+        <img src="PXL_20250709_115558928.jpg" alt="Picture of me 8">
+        <img src="PXL_20260214_010210656.jpg" alt="Picture of me 9">
+        <img src="PXL_20260318_161632756.jpg" alt="Picture of me 10">
+        <img src="Snapchat-1569445150.jpg" alt="Picture of me 11">
+        <img src="PXL_20250709_153812595~2.jpg" alt="Picture of me 12">
+        <img src="PXL_20250615_132520277~2.jpg" alt="Picture of me 13">
+        <img src="Screenshot_20251218-150108.png" alt="Picture of me 14">
+        <img src="PXL_20250709_115558928.jpg" alt="Picture of me 15">
+        <img src="PXL_20250616_125746988~2.jpg" alt="Picture of me 16">
+        <img src="IMG_20260117_230842 (1).jpg" alt="Picture of me 17">
+        <img src="IMG_20260120_175505.jpg" alt="Picture of me 18">
+        <img src="PXL_20260204_010917461.MP.jpg" alt="Picture of me 19">
+        <img src="PXL_20250712_162749409.jpg" alt="Picture of me 20">
+        <img src="PXL_20250621_070843828.jpg" alt="Picture of me 21">
+        <img src="PXL_20251210_051002995.jpg" alt="Picture of me 22">
+        <img src="PXL_20250715_093618418.jpg" alt="Picture of me 23">
+        <img src="20250928_122724-COLLAGE.jpg" alt="Picture of me 24">
+       <!-- <img src="IMG_4736.JPEG" alt="Picture of me 25"> -->
+        <img src="PXL_20250715_115232984.MP.jpg" alt="Picture of me 26">
+        <img src="PXL_20260205_175937545.MP.jpg" alt="Picture of me 27">
+        <img src="IMG_5642_MP.JPEG" alt="Picture of me 28">
+    </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

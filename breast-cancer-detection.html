@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Detection Neural Network</title>
+    <script src="breast-cancer-data.js"></script>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .top-nav {
+            max-width: 1100px;
+            margin: 0 auto 1.25rem;
+        }
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        p, li {
+            line-height: 1.7;
+        }
+        .model-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem 0 2rem;
+            border-radius: 10px;
+        }
+        .section-heading {
+            margin: 2rem 0 0.75rem;
+        }
+        .code-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            color: var(--heading);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid var(--line);
+        }
+        .code-btn:hover {
+            background: linear-gradient(180deg, #7dc2ff, #3b82f6);
+            color: #f8fbff;
+        }
+        .code-btn svg {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+        .data-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--line);
+        }
+        .data-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .data-controls input,
+        .data-controls select {
+            padding: 0.65rem 0.8rem;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: var(--panel);
+            color: var(--text);
+        }
+        .table-wrap {
+            overflow: auto;
+            max-height: 600px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        th {
+            background: var(--panel-elevated);
+            color: var(--heading);
+            padding: 0.8rem;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--line);
+        }
+        td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid var(--line);
+            font-size: 0.9rem;
+            background: var(--panel-solid);
+            color: var(--text);
+        }
+        tbody tr:nth-child(even) td {
+            background: var(--panel-elevated);
+        }
+        .small-note {
+            color: var(--text-soft);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .page-footer-note {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-soft);
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .status-m {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .status-b {
+            background: #dcfce7;
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="back-btn" href="projects.html">Back to Projects</a>
+        <a class="back-btn" href="home.html">Home</a>
+    </div>
+
+    <div class="page">
+        <h1>Breast Cancer Detection Neural Network</h1>
+
+        <p>This program uses the Breast Cancer Wisconsin (Diagnostic) dataset to train and test a neural network that helps identify whether a tumor is malignant or benign. The goal is to support medical decision-making by giving a model a set of diagnostic measurements and having it classify the case as cancerous or noncancerous.</p>
+
+        <p>The network takes in 30 input features and passes them through a deep multi-layer architecture before producing a final prediction. For activation, I used ReLU because of its efficiency and because it helps reduce vanishing gradient problems. For optimization, I used Adam with a low learning rate and weight decay to keep the training process stable.</p>
+
+        <p>Optimizer used:</p>
+        <p><code>torch.optim.Adam(model.parameters(), lr=0.0005, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.0001, amsgrad=False, decoupled_weight_decay=True)</code></p>
+
+        <p>I trained the model for 10,000 epochs, and the final result reached about 99% accuracy after training and testing. I am very happy with that result, and this page shows both the network architecture and the dataset the model was built on.</p>
+
+        <h2 class="section-heading">Neural Network Visualization</h2>
+        <a class="code-btn" href="https://github.com/PqulyD/Breast-Cancer-Identifier-Neural-Network" target="_blank" rel="noopener">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.68c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+            </svg>
+            <span>View Code</span>
+        </a>
+        <img class="model-image" src="breast_cancer_model_architecture_dark_funnel.png" alt="Breast cancer model architecture diagram">
+
+        <div class="data-section">
+            <h2>Dataset Preview</h2>
+            
+
+            <div class="data-controls">
+                <input id="table-search" type="text" placeholder="Search the dataset">
+                <select id="row-count">
+                    <option value="25">Show 25 rows</option>
+                    <option value="50" selected>Show 50 rows</option>
+                    <option value="100">Show 100 rows</option>
+                    <option value="250">Show 250 rows</option>
+                    <option value="569">Show all rows</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr id="table-head"></tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <p class="page-footer-note">License: https://creativecommons.org/licenses/by-nc-sa/4.0/</p>
+        <p class="page-footer-note">Credit: UC Irvine Machine Learning Repository</p>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('table-search');
+        const rowCountSelect = document.getElementById('row-count');
+        const tableHead = document.getElementById('table-head');
+        const tableBody = document.getElementById('table-body');
+
+        const columns = Object.keys(breastCancerData[0] || {});
+        let sortKey = null;
+        let sortDirection = 'asc';
+
+        function renderHead() {
+            tableHead.innerHTML = '';
+            columns.forEach(function (column) {
+                const th = document.createElement('th');
+                th.textContent = sortKey === column
+                    ? column + (sortDirection === 'asc' ? ' ↑' : ' ↓')
+                    : column;
+                th.addEventListener('click', function () {
+                    if (sortKey === column) {
+                        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortKey = column;
+                        sortDirection = 'asc';
+                    }
+                    renderTable();
+                });
+                tableHead.appendChild(th);
+            });
+        }
+
+        function normalizeValue(value) {
+            const parsed = Number(value);
+            return Number.isNaN(parsed) ? String(value).toLowerCase() : parsed;
+        }
+
+        function formatCell(column, value) {
+            if (column === 'diagnosis') {
+                const label = value === 'M' ? 'Malignant' : 'Benign';
+                const className = value === 'M' ? 'status-pill status-m' : 'status-pill status-b';
+                return '<span class="' + className + '">' + label + '</span>';
+            }
+            return value;
+        }
+
+        function renderTable() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const maxRows = Number(rowCountSelect.value);
+
+            let rows = breastCancerData.slice();
+
+            if (searchTerm) {
+                rows = rows.filter(function (row) {
+                    return columns.some(function (column) {
+                        return String(row[column]).toLowerCase().includes(searchTerm);
+                    });
+                });
+            }
+
+            if (sortKey) {
+                rows.sort(function (a, b) {
+                    const aVal = normalizeValue(a[sortKey]);
+                    const bVal = normalizeValue(b[sortKey]);
+
+                    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            rows = rows.slice(0, maxRows);
+
+            tableBody.innerHTML = '';
+            rows.forEach(function (row) {
+                const tr = document.createElement('tr');
+                columns.forEach(function (column) {
+                    const td = document.createElement('td');
+                    td.innerHTML = formatCell(column, row[column]);
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+
+            renderHead();
+        }
+
+        searchInput.addEventListener('input', renderTable);
+        rowCountSelect.addEventListener('change', renderTable);
+
+        renderTable();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

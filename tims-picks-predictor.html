@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tims Picks Predictor</title>
+    <script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        :root {
+            --surface-bg: var(--panel-solid);
+            --surface-panel: var(--panel-elevated);
+            --surface-muted: var(--text-soft);
+            --surface-grid: var(--line-strong);
+            --surface-text: var(--text);
+            --surface-blue: #58a6ff;
+            --surface-red: #ff4d4d;
+            --surface-green: #22c55e;
+            --surface-select-bg: var(--panel);
+            --surface-inline-bg: rgba(37, 99, 235, 0.12);
+            --surface-inline-border: rgba(37, 99, 235, 0.18);
+            --surface-scene-bg: color-mix(in srgb, var(--panel-solid) 92%, #0f1633 8%);
+        }
+        body {
+            padding: 2rem;
+        }
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        p, li {
+            line-height: 1.7;
+        }
+        .graph-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--line);
+        }
+        .code-btn {
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            color: var(--heading);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid var(--line);
+        }
+        .code-btn:hover {
+            background: linear-gradient(180deg, #7dc2ff, #3b82f6);
+            color: #f8fbff;
+        }
+        .code-btn svg {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+        .surface-wrap {
+            padding: 16px 18px;
+            background: var(--surface-bg);
+            color: var(--surface-text);
+            border-radius: 12px;
+            border: 1px solid var(--surface-grid);
+        }
+        .surface-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .surface-card {
+            background: var(--surface-panel);
+            border: 1px solid var(--surface-grid);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .surface-card label {
+            font-size: 0.95rem;
+        }
+        .surface-card select {
+            background: var(--surface-select-bg);
+            color: var(--surface-text);
+            border: 1px solid var(--surface-grid);
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+        .surface-hint {
+            color: var(--surface-muted);
+            font-size: 0.9rem;
+            margin: 6px 0 12px;
+        }
+        .surface-badges {
+            margin-left: 6px;
+        }
+        .surface-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 6px;
+            border: 1px solid transparent;
+        }
+        .surface-b1 {
+            background: #1f62ff33;
+            border-color: var(--surface-blue);
+        }
+        .surface-b2 {
+            background: #ff2e2e33;
+            border-color: var(--surface-red);
+        }
+        .surface-b3 {
+            background: #2bbb2b33;
+            border-color: var(--surface-green);
+        }
+        #chart {
+            height: 74vh;
+            min-height: 520px;
+        }
+        .surface-footer {
+            color: var(--surface-muted);
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        code.inline {
+            background: var(--surface-inline-bg);
+            padding: 2px 6px;
+            border-radius: 6px;
+            border: 1px solid var(--surface-inline-border);
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .chart-card {
+            padding: 1rem;
+        }
+        .chart-card h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+        .chart-card img {
+            width: 100%;
+            max-width: none;
+            height: auto;
+            display: block;
+            margin: 0;
+            border-radius: 8px;
+        }
+        .last-updated {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            text-align: center;
+        }
+        .top-nav {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="back-btn" href="projects.html">Back to Projects</a>
+        <a class="back-btn" href="home.html">Home</a>
+    </div>
+
+    <div class="page">
+        <h1>Tims Picks Predictor</h1>
+        <p>Context
+</p>
+        <p>On the Tim Horotons App, there is a game that users can play called the Tims NHL Challange. This is a daily game that allows users to pick three NHL players that they think will score thatt day. This not gambling because you are not wagering anything. You have to pick one player from each of three lists. List one contains players who are consistent goal scorers, list two consists of semi-frequent goal scorers, and list 3 has players who do not score that often. If you get one prediction right, you get 25 reward points, two predictions right is 50 rewards points, and getting all three player predictions gets you 100 reward points. Also the app tracks if you have a streak of getting consecutive days of correct predictions. This is important because if you get a correct pick in each day within a span of seven days in a row, you get a coupon on the app that gives you free coffee each day for a week. The app also has a leaderboard that tracks how accurate users are. There are leaderboards that tracks stats of users for the whole season but they also track your monthly stats as well. </p>
+        <p>What does the program do?</p>
+        <p> My program takes data from an NHL player stats where it takes each stat and multiplies it my a scalar. Each stat is then summed up for each player. The player with the highest sum is the most likely to score. This is what the formula that find which player is most likely to score: 
+
+
+    <p>shots_pg = (form["shots"] / form["games_used"]) if form["games_used"] else 0
+    <p></p>goals_pg = (form["goals"] / form["games_used"]) if form["games_used"] else 0
+    <p></p>toi = form["avg_toi"]
+
+
+
+
+    <p></p>fatigue_pen = 0.0
+    <p></p>if fat["days_rest"] <= 1:
+        <p></p>fatigue_pen += 0.25
+    <p></p>fatigue_pen += max(0, fat["games_last_6"] - 3) * 0.08
+
+
+
+
+
+
+    <p></p>matchup_adj = (opp_ga - 3.2) * 0.25
+
+
+    <p></p>home_adj = 0.05 if is_home else 0.0
+
+
+    <p></p>raw = (
+        <p></p>1.25 * shots_pg +
+        <p></p>0.90 * goals_pg +
+        <p></p>0.03 * toi +
+        <p></p>matchup_adj +
+        <p></p>home_adj
+        <p></p>- fatigue_pen
+    <p></p>)
+
+<p></p>When the program is ran, it asks for the user to type in each player within their respected list. 
+</p>
+        
+        <h2>Highlights</h2>
+         <ul>
+            <li>76% accuracy (measured in getting at least 1 prediction correct that day) 
+</li>
+            <li>Peaked at 2,756th place on the monthly leaderboard which is the top .54 percentile
+</li>
+            <li>1 seven day streak that got me free coffee for a week
+</li>
+        </ul>
+
+        <a class="code-btn" href="https://github.com/PqulyD/Tim-Picks-Predictor-Program" target="_blank" rel="noopener">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.68c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+            </svg>
+            <span>View Code</span>
+        </a>
+
+        <div class="graph-section">
+            <h2>Project Performance Graph</h2>
+            <p>The interactive surface below helps demonstrate how the Tims Picks Predictor performed and gives visitors a clearer view of the model's success.</p>
+            <div class="surface-wrap">
+                <div class="surface-controls">
+                    <div class="surface-card">
+                        <label for="metric">Z-axis metric:&nbsp;</label>
+                        <select id="metric">
+                            <option value="ratio" selected>Success ratio (Goals / Picks)</option>
+                            <option value="g10">Goals per 10 picks</option>
+                            <option value="goals">Total goals</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="surface-hint">
+                    This build uses an <b>embedded dataset</b> (no uploads). Edit the inline <code class="inline">playerRows</code> array to add or update players.
+                    <b>Bobby McMann</b> is automatically <b>aggregated into List 2</b> if he appears multiple times.
+                </div>
+
+                <div id="chart"></div>
+
+                <div class="surface-footer">
+                    Frequency buckets: <b>1</b>, <b>2-3</b>, <b>4-5</b>, <b>6+</b>. Surface color follows list tier; height follows the chosen metric.
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3>Goals by Player</h3>
+                    <img src="goals_by_player.png" alt="Goals by Player chart">
+                </div>
+
+                <div class="chart-card">
+                    <h3>Goal Hit Rate by Player List</h3>
+                    <img src="goal_hit_rate_by_player_list.png" alt="Goal Hit Rate by Player List chart">
+                </div>
+
+                <div class="chart-card">
+                    <h3>Total Goals by Player List</h3>
+                    <img src="total_goals_by_player_list.png" alt="Total Goals by Player List chart">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    const playerRows = [
+      { Player:'Adrian Kempe', List:1, Frequency:2, Goals:1 },
+      { Player:'Alex DeBrincat', List:1, Frequency:3, Goals:2 },
+      { Player:'Cole Caufield', List:1, Frequency:5, Goals:5 },
+      { Player:'David Pastrnak', List:1, Frequency:6, Goals:4 },
+      { Player:'Connor Bedard', List:1, Frequency:1, Goals:1 },
+      { Player:'Nathan MacKinnon', List:1, Frequency:3, Goals:1 },
+      { Player:'Cutter Gauthier', List:2, Frequency:3, Goals:3 },
+      { Player:'Evan Bouchard', List:2, Frequency:8, Goals:2 },
+      { Player:'Drake Batherson', List:2, Frequency:4, Goals:2 },
+      { Player:'Thomas Chabot', List:2, Frequency:1, Goals:1 },
+      { Player:"Drew O'Connor", List:3, Frequency:3, Goals:2 },
+      { Player:'Pavel Dorofeyev', List:3, Frequency:4, Goals:4 },
+      { Player:'Evander Kane', List:3, Frequency:3, Goals:1 },
+      { Player:'Bobby McMann', List:3, Frequency:1, Goals:0 },
+      { Player:'Bobby McMann', List:2, Frequency:2, Goals:0 }
+    ];
+
+    const bucketDefs = [
+      { id: 1, label: '1', test: f => f === 1 },
+      { id: 2, label: '2-3', test: f => f === 2 || f === 3 },
+      { id: 3, label: '4-5', test: f => f === 4 || f === 5 },
+      { id: 4, label: '6+', test: f => f >= 6 }
+    ];
+    const lists = [1, 2, 3];
+    const listLabels = { 1: 'List 1', 2: 'List 2', 3: 'List 3' };
+    const listColorCode = { 1: 0.0, 2: 0.5, 3: 1.0 };
+    const colorScale = [
+      [0.0, '#2b6bff'], [0.0, '#2b6bff'],
+      [0.5, '#ff4d4d'], [0.5, '#ff4d4d'],
+      [1.0, '#36ce36'], [1.0, '#36ce36']
+    ];
+
+    function normalizeRows(rows) {
+      const map = new Map();
+      for (const r of rows) {
+        const name = String(r.Player || '').trim();
+        if (!name) continue;
+        let list = parseInt(r.List, 10);
+        let freq = +r.Frequency || 0;
+        let goals = +r.Goals || 0;
+        if (name.toLowerCase() === 'bobby mcmann') list = 2;
+        const key = name.toLowerCase();
+        if (!map.has(key)) {
+          map.set(key, { name, list: [1, 2, 3].includes(list) ? list : 3, freq: 0, goals: 0 });
+        }
+        const obj = map.get(key);
+        obj.list = (obj.list === 2 || list === 2) ? 2 : obj.list;
+        obj.freq += Math.max(0, Math.floor(freq));
+        obj.goals += Math.max(0, Math.floor(goals));
+      }
+      return Array.from(map.values());
+    }
+
+    function bucketIdFor(f) {
+      for (const b of bucketDefs) {
+        if (b.test(f)) return b.id;
+      }
+      return null;
+    }
+
+    function pivotByListBucket(items) {
+      const cell = {};
+      for (const it of items) {
+        const b = bucketIdFor(it.freq);
+        if (!b) continue;
+        const k = `${it.list}-${b}`;
+        if (!cell[k]) cell[k] = { sumFreq: 0, sumGoals: 0, count: 0 };
+        cell[k].sumFreq += it.freq;
+        cell[k].sumGoals += it.goals;
+        cell[k].count += 1;
+      }
+      return cell;
+    }
+
+    function buildGrids(cell, metric) {
+      const yBuckets = bucketDefs.map(b => b.id);
+      const Z = yBuckets.map(() => lists.map(() => null));
+      const S = yBuckets.map(() => lists.map(() => null));
+      for (let yi = 0; yi < yBuckets.length; yi++) {
+        for (let xi = 0; xi < lists.length; xi++) {
+          const k = `${lists[xi]}-${yBuckets[yi]}`;
+          const v = cell[k];
+          let z = null;
+          if (v) {
+            if (metric === 'ratio') z = v.sumFreq > 0 ? (v.sumGoals / v.sumFreq) : null;
+            else if (metric === 'g10') z = v.sumFreq > 0 ? (10 * v.sumGoals / v.sumFreq) : null;
+            else if (metric === 'goals') z = v.sumGoals;
+          }
+          Z[yi][xi] = z;
+          S[yi][xi] = listColorCode[lists[xi]];
+        }
+      }
+      return { x: lists, y: yBuckets, Z, S };
+    }
+
+    function renderSurface(metric) {
+      const items = normalizeRows(playerRows);
+      const pivot = pivotByListBucket(items);
+      const { x, y, Z, S } = buildGrids(pivot, metric);
+      const data = [{
+        type: 'surface',
+        x: x,
+        y: y,
+        z: Z,
+        surfacecolor: S,
+        colorscale: colorScale,
+        showscale: false,
+        hovertemplate: (
+          'List: %{x}<br>' +
+          'Freq bucket: %{y}<br>' +
+          ((metric === 'ratio') ? 'Success ratio: %{z:.2%}' : (metric === 'g10' ? 'Goals/10 picks: %{z:.2f}' : 'Total goals: %{z}')) +
+          '<extra></extra>'
+        ),
+        contours: { z: { show: true, usecolormap: false, highlightcolor: '#ffffff', project: { z: true } } }
+      }];
+
+      const rootStyles = getComputedStyle(document.documentElement);
+      const sceneBg = rootStyles.getPropertyValue('--surface-scene-bg').trim() || rootStyles.getPropertyValue('--surface-bg').trim();
+      const sceneGrid = rootStyles.getPropertyValue('--surface-grid').trim();
+      const sceneText = rootStyles.getPropertyValue('--surface-text').trim();
+      const layout = {
+        paper_bgcolor: rootStyles.getPropertyValue('--surface-bg').trim(),
+        plot_bgcolor: rootStyles.getPropertyValue('--surface-bg').trim(),
+        title: `Surface: List Tier x Frequency -> ${metric === 'ratio' ? 'Success ratio' : metric === 'g10' ? 'Goals per 10 picks' : 'Total goals'}`,
+        margin: { l: 0, r: 0, t: 48, b: 0 },
+        scene: {
+          xaxis: { title: 'List Tier', tickmode: 'array', tickvals: [1,2,3], ticktext: [listLabels[1], listLabels[2], listLabels[3]], backgroundcolor: sceneBg, gridcolor: sceneGrid, zerolinecolor: sceneGrid, color: sceneText },
+          yaxis: { title: 'Pick Frequency (bucketed)', tickmode: 'array', tickvals: [1,2,3,4], ticktext: bucketDefs.map(b => b.label), backgroundcolor: sceneBg, gridcolor: sceneGrid, zerolinecolor: sceneGrid, color: sceneText },
+          zaxis: { title: 'Performance', backgroundcolor: sceneBg, gridcolor: sceneGrid, zerolinecolor: sceneGrid, color: sceneText }
+        }
+      };
+
+      Plotly.newPlot('chart', data, layout, { displaylogo: false, responsive: true });
+    }
+
+    const metricEl = document.getElementById('metric');
+    renderSurface(metricEl.value);
+    metricEl.addEventListener('change', () => renderSurface(metricEl.value));
+    document.addEventListener('themechange', () => renderSurface(metricEl.value));
+    </script>
+    <script src="script.js"></script>
+    <p class="last-updated">Graphs were last updated on (3/27/2026)</p>
+</body>
+</html>
