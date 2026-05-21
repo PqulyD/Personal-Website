@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 March Madness Predictor with Logistic Regression</title>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+            background:
+                linear-gradient(rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+                radial-gradient(circle at 12% 16%, rgba(59, 130, 246, 0.2), transparent 24%),
+                radial-gradient(circle at 86% 14%, rgba(125, 211, 252, 0.14), transparent 20%),
+                radial-gradient(circle at 50% 115%, rgba(37, 99, 235, 0.18), transparent 28%),
+                linear-gradient(180deg, #07111f 0%, #091423 38%, #0b1730 100%) !important;
+            background-size: 28px 28px, 28px 28px, auto, auto, auto, auto !important;
+            background-position: 0 0, 0 0, center, center, center, center !important;
+        }
+        .top-nav {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+        }
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .page > h1 {
+            font-size: clamp(2.8rem, 5vw, 4rem);
+            line-height: 1.02;
+            margin-bottom: 0.85rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-soft);
+            margin-bottom: 1.5rem;
+        }
+        img {
+            width: 100%;
+            max-width: 420px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        p, li {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .code-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            color: var(--heading);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid var(--line);
+        }
+        .code-btn:hover {
+            background: linear-gradient(180deg, #7dc2ff, #3b82f6);
+            color: #f8fbff;
+        }
+        .code-btn svg {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+        .project-section {
+            margin-top: 2rem;
+        }
+        .section-divider {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--line);
+        }
+        h2 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+        }
+        .highlight-box {
+            padding: 1.25rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));
+            border: 1px solid var(--line-strong);
+            margin: 1rem 0;
+        }
+        .page-footer-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+        .bracket-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            background: var(--panel-solid);
+            padding: 1rem;
+            border: 1px solid var(--line);
+        }
+        .pipeline-diagram {
+            width: 100%;
+            height: auto;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--panel-elevated) 0%, var(--panel) 100%);
+            border-radius: 12px;
+            border: 1px solid var(--line-strong);
+        }
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .step-box {
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--panel-solid);
+            border: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .step-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+        }
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--heading);
+        }
+        .step-description {
+            font-size: 0.9rem;
+            color: var(--text-soft);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        .feature-tag {
+            padding: 0.6rem 0.9rem;
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.15), rgba(59, 130, 246, 0.08));
+            border: 1px solid var(--line-strong);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="back-btn" href="projects.html">Back to Projects</a>
+        <a class="back-btn" href="index.html">Home</a>
+    </div>
+
+    <div class="page">
+        <h1>2026 March Madness Predictor with Logistic Regression</h1>
+        <p class="page-subtitle">A sports analytics project using machine learning to predict college basketball tournament matchup outcomes based on team performance statistics.</p>
+        
+        <p>March Madness is the NCAA Division I Men's Basketball Tournament, and predicting game outcomes is a challenging and engaging machine learning problem. This project builds a logistic regression model trained on historical tournament matchup data to forecast the probability that one team will defeat another based on key statistical features. The model evaluates teams using performance metrics and learns the statistical patterns that correlate with tournament success.</p>
+        
+        <p>At its core, this project demonstrates a complete machine learning pipeline: data preprocessing, feature engineering, model training, and prediction. The key insight is that basketball matchups are not simply about team strength in isolation, but about how two teams match up against each other. By computing difference features—comparing one team's stats against another—the model captures relative advantages and disadvantages that drive game outcomes.</p>
+
+        <div class="project-section">
+            <a class="code-btn" href="https://github.com/PqulyD/March-Madness-2026-Predictor-with-StandardScaler-LogisticRegression/tree/main" target="_blank" rel="noopener">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.68c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+                </svg>
+                <span>View Code</span>
+            </a>
+
+            <div class="section-divider">
+                <h2>My Bracket</h2>
+                <div style="overflow-x: auto; margin: 1.5rem 0;">
+                    <img class="bracket-image" src="march-madness-bracket-2026.png" alt="2026 March Madness Tournament Bracket">
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <h2>How the Model Works</h2>
+                <p>The prediction pipeline transforms raw team statistics into actionable win probability forecasts through a series of well-defined steps:</p>
+                
+                <div class="pipeline-diagram">
+                    <div class="step-grid">
+                        <div class="step-box">
+                            <div class="step-number">1</div>
+                            <div class="step-title">Load Data</div>
+                            <div class="step-description">Historical matchups and team statistics from the tournament</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">2</div>
+                            <div class="step-title">Build Features</div>
+                            <div class="step-description">Compute Team A minus Team B for each statistic</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">3</div>
+                            <div class="step-title">Normalize</div>
+                            <div class="step-description">Scale features using StandardScaler for consistent magnitudes</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Train Model</div>
+                            <div class="step-description">Logistic regression learns patterns from historical data</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">5</div>
+                            <div class="step-title">Predict</div>
+                            <div class="step-description">Generate win probabilities for upcoming matchups</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">6</div>
+                            <div class="step-title">Output</div>
+                            <div class="step-description">Save predictions with human-readable probabilities</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <h2>Feature Engineering: The Key Difference Features</h2>
+                <p>The model doesn't evaluate teams in isolation—it compares them directly. For each matchup, I compute seven key difference features that capture how one team stacks up against the other:</p>
+                
+                <div class="highlight-box">
+                    <strong>Difference Features (Team A minus Team B):</strong>
+                    <div class="feature-grid">
+                        <div class="feature-tag">SRS (Rating)</div>
+                        <div class="feature-tag">Offensive Rating</div>
+                        <div class="feature-tag">Effective FG %</div>
+                        <div class="feature-tag">Turnover %</div>
+                        <div class="feature-tag">Rebound %</div>
+                        <div class="feature-tag">Opp. Def. FG %</div>
+                        <div class="feature-tag">Pace</div>
+                    </div>
+                </div>
+
+                <p><strong>Why this approach works:</strong> A team with a high offensive rating is only an advantage if their opponent has a lower one. By computing differences, the model learns relative strengths rather than absolute values. For example, if Duke (strong offense) plays Louisville (weaker defense), the positive difference in offensive rating becomes predictive. The logistic regression then learns which combinations of differences correlate with wins.</p>
+            </div>
+
+            <div class="section-divider">
+                <h2>The Logistic Regression Model</h2>
+                <p>Logistic regression is chosen for this problem because it outputs calibrated probability estimates—exactly what we need for tournament predictions. The model architecture consists of two stages:</p>
+                
+                <div class="highlight-box">
+                    <strong>Pipeline Components:</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.75rem;">
+                        <li><strong>StandardScaler:</strong> Normalizes all features to have mean 0 and standard deviation 1. This ensures that features with different scales (e.g., pace ranging from 60-80 vs SRS ranging from -30 to +30) contribute equally to the model's decision boundary.</li>
+                        <li><strong>LogisticRegression:</strong> A linear classifier that learns weights for each feature. Features with positive weights increase the predicted win probability for Team A, while negative weights decrease it. The sigmoid function transforms weighted sums into probabilities between 0 and 1.</li>
+                    </ul>
+                </div>
+
+                <p><strong>Model Configuration:</strong></p>
+                <ul style="margin-left: 1.5rem;">
+                    <li><code>penalty="l2"</code> — Regularization to prevent overfitting</li>
+                    <li><code>solver="lbfgs"</code> — Optimization algorithm for combining different feature scales</li>
+                    <li><code>max_iter=1000</code> — Maximum iterations to find optimal weights</li>
+                </ul>
+            </div>
+
+            <div class="section-divider">
+                <h2>Data Preprocessing & Real-World Challenges</h2>
+                <p>Real tournament data is messy. Team names vary across sources: is it "Brigham Young" or "BYU"? Is it "UConn" or "Connecticut"? This project includes a comprehensive name-mapping dictionary to standardize all team references before processing:</p>
+
+                <div class="highlight-box">
+                    <strong>Name Standardization Examples:</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.75rem;">
+                        <li>BYU → Brigham Young</li>
+                        <li>Uconn → Connecticut</li>
+                        <li>VCU → Virginia Commonwealth</li>
+                        <li>St Johns → Saint John's (NY)</li>
+                        <li>Penn → Pennsylvania</li>
+                    </ul>
+                </div>
+
+                <p>After standardization, the model filters to only matchups where both teams have complete statistical profiles in the dataset. Games with missing team data are excluded, preserving prediction integrity. This ensures every prediction is grounded in reliable historical data rather than guesses about missing stats.</p>
+            </div>
+
+            <div class="section-divider">
+                <h2>Predictions & Output Format</h2>
+                <p>The model generates predictions for tournament matchups in a human-readable format. For each game, it outputs:</p>
+                
+                <div class="highlight-box">
+                    <strong>Prediction Format:</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.75rem;">
+                        <li><strong>Team Names:</strong> Team A and Team B in the matchup</li>
+                        <li><strong>Predicted Winner:</strong> The team with the higher win probability</li>
+                        <li><strong>Win Probability:</strong> Confidence level (e.g., Duke 72.5% vs UConn 27.5%)</li>
+                    </ul>
+                </div>
+
+                <p>For example, if the model predicts Duke has a 72.5% chance to beat UConn, the output shows: <strong>"Duke (72.5%)"</strong>. These calibrated probabilities allow tournament participants to distinguish between close matchups (51% vs 49%) and mismatches (85% vs 15%), enabling smarter bracket-building decisions.</p>
+                
+                <p>All predictions are saved to CSV format for easy tracking and accuracy measurement as the tournament progresses. This allows season-end analysis of which teams the model correctly identified and which predictions fell short.</p>
+            </div>
+
+            <div class="section-divider">
+                <h2>Key Takeaways</h2>
+                <p>This project demonstrates several important machine learning principles:</p>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Feature engineering matters more than model complexity:</strong> Difference features capture matchup dynamics better than raw statistics.</li>
+                    <li><strong>Data preprocessing is critical:</strong> Handling name inconsistencies and missing values directly impacts prediction quality.</li>
+                    <li><strong>Probability estimates are more useful than binary predictions:</strong> Knowing a team is 65% likely to win is more actionable than just picking a winner.</li>
+                    <li><strong>Pipeline architecture ensures consistency:</strong> Applying the same scaling and model to new data guarantees reliable predictions throughout the tournament.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
