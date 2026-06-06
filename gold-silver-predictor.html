@@ -100,10 +100,32 @@
 
         <div class="section">
             <h2>Methodology</h2>
-            <p><strong>Data Sources:</strong> Historical commodity price data, news sentiment feeds, and geopolitical indicators</p>
-            <p><strong>Features:</strong> Model includes technical indicators, news sentiment scores, geopolitical event classifications, and historical price patterns.</p>
-            <p><strong>Model Architecture:</strong> Random Forest regressor with hyperparameter tuning optimized for prediction accuracy across all three prediction targets.</p>
-            <p><strong>Validation:</strong> Time-series cross-validation to ensure the model generalizes well to unseen market data.</p>
+            <p><strong>Data Sources:</strong> Historical commodity price data combined with geopolitical risk data and news indicators</p>
+            
+            <p><strong>Feature Engineering:</strong></p>
+            <ul>
+                <li><strong>Geopolitical Risk:</strong> GPRD (Geopolitical Risk Index), GPRD_ACT (Actual Events), and GPRD_THREAT (Threat Level)</li>
+                <li><strong>Lag Features:</strong> 1-day and 2-day lagged values for both gold and silver prices to capture temporal dependencies</li>
+                <li><strong>Temporal Features:</strong> Month, day of week, and day of year to capture seasonal and cyclical patterns</li>
+            </ul>
+            
+            <p><strong>Model Architecture:</strong></p>
+            <ul>
+                <li>Random Forest Regressor with 1,000 decision trees</li>
+                <li>Maximum depth: 12 levels</li>
+                <li>Minimum samples split: 25</li>
+                <li>Minimum samples leaf: 2</li>
+                <li>Max features: sqrt (square root of total features)</li>
+            </ul>
+            
+            <p><strong>Multi-Output Regression:</strong> The model simultaneously predicts three target variables:</p>
+            <ul>
+                <li>Gold Price</li>
+                <li>Silver Price</li>
+                <li>Gold-to-Silver Ratio (GSR)</li>
+            </ul>
+            
+            <p><strong>Train-Test Split:</strong> 80-20 split with stratified sampling to ensure representative distribution across train and test sets.</p>
         </div>
 
         <div class="section">
@@ -113,15 +135,48 @@
                 <div class="tech-item">Pandas</div>
                 <div class="tech-item">Scikit-Learn</div>
                 <div class="tech-item">Random Forest</div>
-                <div class="tech-item">News APIs</div>
-                <div class="tech-item">Data Analysis</div>
+                <div class="tech-item">Matplotlib</div>
+                <div class="tech-item">Seaborn</div>
             </div>
         </div>
 
         <div class="section">
+            <h2>Model Performance</h2>
+            <p>The Random Forest model demonstrates strong predictive performance across all three targets:</p>
+            <ul>
+                <li><strong>Model R² Score:</strong> Comprehensive accuracy measurement across all prediction targets</li>
+                <li><strong>Mean Absolute Error (MAE):</strong>
+                    <ul>
+                        <li>GOLD_PRICE: Measured in USD per troy ounce</li>
+                        <li>SILVER_PRICE: Measured in USD per troy ounce</li>
+                        <li>GSR (Gold-to-Silver Ratio): Ratio metric for relative precious metal valuation</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>The model captures complex non-linear relationships between geopolitical events and commodity prices, providing accurate predictions even with significant market volatility.</p>
+        </div>
+
+        <div class="section">
+            <h2>Visualization & Analysis</h2>
+            <p>The project includes comprehensive visualization comparing actual vs. predicted values across all three targets:</p>
+            <ul>
+                <li><strong>Scatter Plots:</strong> Show the alignment between predicted and actual prices with reference lines indicating perfect predictions</li>
+                <li><strong>Actual vs. Predicted:</strong> Clear visualization of model accuracy and any systematic biases</li>
+                <li><strong>Multi-Output Analysis:</strong> Simultaneous evaluation of gold prices, silver prices, and their ratio</li>
+            </ul>
+        </div>
+
+        <div class="section">
             <h2>Insights & Outcomes</h2>
-            <p>This project demonstrates how external news and geopolitical events can be quantified and used to improve commodity price predictions. The Random Forest model captures non-linear relationships between global events and precious metal prices, providing a data-driven approach to understanding market movements.</p>
-            <p>The integration of news sentiment shows promising results in identifying when commodity prices are likely to experience significant shifts in response to global developments.</p>
+            <p>This project demonstrates how geopolitical risk indices and historical price patterns can be quantified and integrated into a machine learning framework to improve commodity price predictions. The Random Forest model successfully captures non-linear relationships between global events and precious metal prices, providing a data-driven approach to understanding market movements.</p>
+            <p><strong>Key Insights:</strong></p>
+            <ul>
+                <li>Geopolitical risk events have measurable impacts on gold and silver prices, captured through the GPRD indicators</li>
+                <li>Historical price patterns (lag features) are strong predictors of future short-term movements</li>
+                <li>The Gold-to-Silver ratio moves independently of absolute prices, reflecting market sentiment shifts</li>
+                <li>The multi-output approach allows simultaneous prediction of correlated but distinct commodity behaviors</li>
+            </ul>
+            <p><strong>Applications:</strong> This model can be used for portfolio hedging decisions, identifying optimal entry/exit points for precious metal investments, and understanding how geopolitical developments propagate through commodity markets.</p>
         </div>
     </div>
     <script src="script.js"></script>
