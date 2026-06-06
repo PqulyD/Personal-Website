@@ -9,126 +9,117 @@
         body {
             padding: 2rem;
         }
-        .project-container {
+        .top-nav {
+            max-width: 900px;
+            margin: 0 auto 1.25rem;
+        }
+        .page {
             max-width: 900px;
             margin: 0 auto;
+            padding: 2rem;
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .back-btn {
-            margin-bottom: 1.5rem;
-            display: inline-block;
-        }
-        .project-header {
-            margin-bottom: 2rem;
-        }
-        .project-image {
+        img {
             width: 100%;
-            max-width: 600px;
-            height: 300px;
+            max-width: 420px;
+            height: 260px;
             object-fit: cover;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-        }
-        .section {
-            margin: 2.5rem 0;
-            padding: 1.75rem;
-            background: var(--blue-soft);
-            border: 1px solid var(--line-strong);
-            border-radius: 12px;
-        }
-        .section h2 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-            color: var(--heading);
-        }
-        .section p {
-            line-height: 1.8;
-            margin: 0.5rem 0;
-        }
-        .section ul {
+            border-radius: 10px;
             margin: 1rem 0;
-            padding-left: 2rem;
         }
-        .section li {
-            margin: 0.5rem 0;
-            line-height: 1.6;
+        p, li {
+            line-height: 1.7;
+        }
+        .code-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(180deg, var(--panel-elevated), var(--panel-solid));
+            color: var(--heading);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid var(--line);
+        }
+        .code-btn:hover {
+            background: linear-gradient(180deg, #7dc2ff, #3b82f6);
+            color: #f8fbff;
+        }
+        .code-btn svg {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+        .rf-section {
+            margin-top: 2rem;
         }
         .tech-stack {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
             margin-top: 1rem;
         }
         .tech-item {
-            padding: 0.75rem;
-            background: var(--panel);
-            border: 1px solid var(--line);
+            padding: 0.6rem 0.8rem;
+            background: var(--blue-soft);
+            border: 1px solid var(--line-strong);
             border-radius: 8px;
             text-align: center;
+            font-size: 0.9rem;
             font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="project-container">
-        <a class="back-btn" href="projects.html">← Back to Projects</a>
+    <div class="top-nav">
+        <a class="back-btn" href="projects.html">Back to Projects</a>
+        <a class="back-btn" href="index.html">Home</a>
+    </div>
+
+    <div class="page">
+        <h1>Gold, Silver, and GSR Random Forest Price Predictor</h1>
         
-        <div class="project-header">
-            <h1>Gold, Silver, and GSR Random Forest Price Predictor With News</h1>
-            <img src="https://img.etimg.com/thumb/msid-130266252,width-300,height-225,imgsize-126369,resizemode-75/gold-silver-ratio-forecast-2026-at-75-should-you-buy-gold-or-silver-now-best-investment-strategy-timing-allocation-guide.jpg" alt="Gold and Silver Markets" class="project-image">
-        </div>
+        <a class="code-btn" href="https://github.com/PqulyD/Gold-Silver-Gsr-Random-Forest-price-predictor-with-News/blob/main/Random_Forest_predictor_on_how_news_can_change_prices_in_gold_%26_silver.ipynb" target="_blank" rel="noopener">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.68c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+            </svg>
+            <span>View Code</span>
+        </a>
 
-        <div class="section">
-            <h2>Project Overview</h2>
-            <p>This financial analytics project leverages machine learning to predict precious metal prices by analyzing geopolitical events, market sentiment, and historical price data. The model focuses on gold, silver, and the gold-to-silver ratio (GSR) using Random Forest regression algorithms.</p>
-            <p>By incorporating news sentiment analysis and geopolitical factors, the system aims to identify price movements driven by global events, making it a tool for understanding how external news impacts commodity markets.</p>
-        </div>
+        <img src="https://img.etimg.com/thumb/msid-130266252,width-300,height-225,imgsize-126369,resizemode-75/gold-silver-ratio-forecast-2026-at-75-should-you-buy-gold-or-silver-now-best-investment-strategy-timing-allocation-guide.jpg" alt="Gold and Silver Markets">
 
-        <div class="section">
-            <h2>Key Features</h2>
+        <p>This financial analytics project leverages a Random Forest regressor to predict precious metal prices by analyzing geopolitical risk indices and historical price patterns. The model simultaneously predicts three correlated but distinct targets: gold prices, silver prices, and the gold-to-silver ratio (GSR). By integrating geopolitical risk indicators with temporal market data, the system demonstrates how global events propagate through commodity markets in measurable ways.</p>
+
+        <p>The dataset combines historical commodity prices with geopolitical risk data over multiple years. Feature engineering includes the Geopolitical Risk Index (GPRD) with actual events and threat level components, lagged price values from the previous 1 and 2 days to capture short-term momentum, and temporal features (month, day of week, day of year) to model seasonal and cyclical patterns. This multi-faceted feature set allows the model to capture both the immediate impact of geopolitical shocks and the longer-term cyclical behavior of precious metal markets.</p>
+
+        <p>The Random Forest model is trained with 1,000 decision trees, each with a maximum depth of 12 levels and minimum samples per leaf of 2. The model uses square-root feature selection and is evaluated on a held-out test set (20% of data) using Mean Absolute Error (MAE) for each target and overall R² scoring. Actual vs. predicted scatter plots with reference lines provide clear visualization of model accuracy across all three prediction targets. The results demonstrate that the model captures non-linear relationships between geopolitical events and precious metal prices, providing a data-driven approach to understanding commodity market movements.</p>
+
+        <div class="rf-section">
+            <h2>Model Architecture & Features</h2>
             <ul>
-                <li><strong>Multi-Commodity Prediction:</strong> Predicts prices for gold, silver, and the GSR simultaneously</li>
-                <li><strong>News Integration:</strong> Incorporates news sentiment and geopolitical events as features</li>
-                <li><strong>Random Forest Modeling:</strong> Uses ensemble learning for robust price predictions</li>
-                <li><strong>Feature Engineering:</strong> Develops meaningful features from raw market and news data</li>
-                <li><strong>Model Evaluation:</strong> Comprehensive metrics including MAE, RMSE, and R² scores</li>
+                <li><strong>Random Forest Regressor:</strong> 1,000 trees with max depth of 12 and minimum samples split of 25</li>
+                <li><strong>Geopolitical Features:</strong> GPRD index, actual events count, and threat level ratings</li>
+                <li><strong>Temporal Features:</strong> 1-day and 2-day lagged gold/silver prices; month, day of week, day of year</li>
+                <li><strong>Multi-Output Regression:</strong> Simultaneous prediction of gold price, silver price, and GSR</li>
+                <li><strong>Train-Test Split:</strong> 80-20 split to ensure robust performance evaluation</li>
             </ul>
         </div>
 
-        <div class="section">
-            <h2>Methodology</h2>
-            <p><strong>Data Sources:</strong> Historical commodity price data combined with geopolitical risk data and news indicators</p>
-            
-            <p><strong>Feature Engineering:</strong></p>
+        <div class="rf-section">
+            <h2>Key Insights</h2>
             <ul>
-                <li><strong>Geopolitical Risk:</strong> GPRD (Geopolitical Risk Index), GPRD_ACT (Actual Events), and GPRD_THREAT (Threat Level)</li>
-                <li><strong>Lag Features:</strong> 1-day and 2-day lagged values for both gold and silver prices to capture temporal dependencies</li>
-                <li><strong>Temporal Features:</strong> Month, day of week, and day of year to capture seasonal and cyclical patterns</li>
+                <li>Geopolitical risk events have measurable impacts on gold and silver prices captured through GPRD indicators</li>
+                <li>Historical price lag features are strong predictors of future short-term commodity movements</li>
+                <li>The Gold-to-Silver ratio moves independently of absolute prices, reflecting distinct market sentiment shifts</li>
+                <li>Multi-output regression allows simultaneous prediction of highly correlated but structurally different market behaviors</li>
+                <li>The model's performance demonstrates that machine learning can extract actionable patterns from the intersection of global events and commodity markets</li>
             </ul>
-            
-            <p><strong>Model Architecture:</strong></p>
-            <ul>
-                <li>Random Forest Regressor with 1,000 decision trees</li>
-                <li>Maximum depth: 12 levels</li>
-                <li>Minimum samples split: 25</li>
-                <li>Minimum samples leaf: 2</li>
-                <li>Max features: sqrt (square root of total features)</li>
-            </ul>
-            
-            <p><strong>Multi-Output Regression:</strong> The model simultaneously predicts three target variables:</p>
-            <ul>
-                <li>Gold Price</li>
-                <li>Silver Price</li>
-                <li>Gold-to-Silver Ratio (GSR)</li>
-            </ul>
-            
-            <p><strong>Train-Test Split:</strong> 80-20 split with stratified sampling to ensure representative distribution across train and test sets.</p>
         </div>
 
-        <div class="section">
+        <div class="rf-section">
             <h2>Technologies Used</h2>
             <div class="tech-stack">
                 <div class="tech-item">Python</div>
@@ -140,43 +131,9 @@
             </div>
         </div>
 
-        <div class="section">
-            <h2>Model Performance</h2>
-            <p>The Random Forest model demonstrates strong predictive performance across all three targets:</p>
-            <ul>
-                <li><strong>Model R² Score:</strong> Comprehensive accuracy measurement across all prediction targets</li>
-                <li><strong>Mean Absolute Error (MAE):</strong>
-                    <ul>
-                        <li>GOLD_PRICE: Measured in USD per troy ounce</li>
-                        <li>SILVER_PRICE: Measured in USD per troy ounce</li>
-                        <li>GSR (Gold-to-Silver Ratio): Ratio metric for relative precious metal valuation</li>
-                    </ul>
-                </li>
-            </ul>
-            <p>The model captures complex non-linear relationships between geopolitical events and commodity prices, providing accurate predictions even with significant market volatility.</p>
-        </div>
-
-        <div class="section">
-            <h2>Visualization & Analysis</h2>
-            <p>The project includes comprehensive visualization comparing actual vs. predicted values across all three targets:</p>
-            <ul>
-                <li><strong>Scatter Plots:</strong> Show the alignment between predicted and actual prices with reference lines indicating perfect predictions</li>
-                <li><strong>Actual vs. Predicted:</strong> Clear visualization of model accuracy and any systematic biases</li>
-                <li><strong>Multi-Output Analysis:</strong> Simultaneous evaluation of gold prices, silver prices, and their ratio</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Insights & Outcomes</h2>
-            <p>This project demonstrates how geopolitical risk indices and historical price patterns can be quantified and integrated into a machine learning framework to improve commodity price predictions. The Random Forest model successfully captures non-linear relationships between global events and precious metal prices, providing a data-driven approach to understanding market movements.</p>
-            <p><strong>Key Insights:</strong></p>
-            <ul>
-                <li>Geopolitical risk events have measurable impacts on gold and silver prices, captured through the GPRD indicators</li>
-                <li>Historical price patterns (lag features) are strong predictors of future short-term movements</li>
-                <li>The Gold-to-Silver ratio moves independently of absolute prices, reflecting market sentiment shifts</li>
-                <li>The multi-output approach allows simultaneous prediction of correlated but distinct commodity behaviors</li>
-            </ul>
-            <p><strong>Applications:</strong> This model can be used for portfolio hedging decisions, identifying optimal entry/exit points for precious metal investments, and understanding how geopolitical developments propagate through commodity markets.</p>
+        <div class="rf-section">
+            <h2>Applications</h2>
+            <p>This model can be used for multiple real-world applications including portfolio hedging decisions, identifying optimal entry and exit points for precious metal investments, risk assessment based on geopolitical developments, and understanding how global events propagate through commodity markets. Investors and financial analysts can use the price predictions to inform strategic trading decisions and hedge positions against geopolitical uncertainty.</p>
         </div>
     </div>
     <script src="script.js"></script>
