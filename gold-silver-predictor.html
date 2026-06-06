@@ -89,15 +89,13 @@
             <span>View Code</span>
         </a>
 
-        <img src="https://img.etimg.com/thumb/msid-130266252,width-300,height-225,imgsize-126369,resizemode-75/gold-silver-ratio-forecast-2026-at-75-should-you-buy-gold-or-silver-now-best-investment-strategy-timing-allocation-guide.jpg" alt="Gold and Silver Markets">
-
         <p>This financial analytics project leverages a Random Forest regressor to predict precious metal prices by analyzing geopolitical risk indices and historical price patterns. The model simultaneously predicts three correlated but distinct targets: gold prices, silver prices, and the gold-to-silver ratio (GSR). By integrating geopolitical risk indicators with temporal market data, the system demonstrates how global events propagate through commodity markets in measurable ways.</p>
 
         <p>The dataset combines historical commodity prices with geopolitical risk data over multiple years. Feature engineering includes the Geopolitical Risk Index (GPRD) with actual events and threat level components, lagged price values from the previous 1 and 2 days to capture short-term momentum, and temporal features (month, day of week, day of year) to model seasonal and cyclical patterns. This multi-faceted feature set allows the model to capture both the immediate impact of geopolitical shocks and the longer-term cyclical behavior of precious metal markets.</p>
 
         <p>The Random Forest model is trained with 1,000 decision trees, each with a maximum depth of 12 levels and minimum samples per leaf of 2. The model uses square-root feature selection and is evaluated on a held-out test set (20% of data) using Mean Absolute Error (MAE) for each target and overall R² scoring. Actual vs. predicted scatter plots with reference lines provide clear visualization of model accuracy across all three prediction targets. The results demonstrate that the model captures non-linear relationships between geopolitical events and precious metal prices, providing a data-driven approach to understanding commodity market movements.</p>
 
-        <img src="gold-silver-gsr-predictions.png" alt="Actual vs. Predicted Values for Gold Price, Silver Price, and GSR">
+        <img src="actVSpred.png" alt="Actual vs. Predicted Values for Gold Price, Silver Price, and GSR">
 
         <div class="rf-section">
             <h2>Model Architecture & Features</h2>
@@ -119,18 +117,6 @@
                 <li>Multi-output regression allows simultaneous prediction of highly correlated but structurally different market behaviors</li>
                 <li>The model's performance demonstrates that machine learning can extract actionable patterns from the intersection of global events and commodity markets</li>
             </ul>
-        </div>
-
-        <div class="rf-section">
-            <h2>Technologies Used</h2>
-            <div class="tech-stack">
-                <div class="tech-item">Python</div>
-                <div class="tech-item">Pandas</div>
-                <div class="tech-item">Scikit-Learn</div>
-                <div class="tech-item">Random Forest</div>
-                <div class="tech-item">Matplotlib</div>
-                <div class="tech-item">Seaborn</div>
-            </div>
         </div>
 
         <div class="rf-section">
