@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold, Silver, and GSR Random Forest Price Predictor</title>
+    <link rel="stylesheet" href="site-theme.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .project-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .back-btn {
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+        .project-header {
+            margin-bottom: 2rem;
+        }
+        .project-image {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+        .section {
+            margin: 2.5rem 0;
+            padding: 1.75rem;
+            background: var(--blue-soft);
+            border: 1px solid var(--line-strong);
+            border-radius: 12px;
+        }
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--heading);
+        }
+        .section p {
+            line-height: 1.8;
+            margin: 0.5rem 0;
+        }
+        .section ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        .section li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .tech-item {
+            padding: 0.75rem;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <a class="back-btn" href="projects.html">← Back to Projects</a>
+        
+        <div class="project-header">
+            <h1>Gold, Silver, and GSR Random Forest Price Predictor With News</h1>
+            <img src="https://img.etimg.com/thumb/msid-130266252,width-300,height-225,imgsize-126369,resizemode-75/gold-silver-ratio-forecast-2026-at-75-should-you-buy-gold-or-silver-now-best-investment-strategy-timing-allocation-guide.jpg" alt="Gold and Silver Markets" class="project-image">
+        </div>
+
+        <div class="section">
+            <h2>Project Overview</h2>
+            <p>This financial analytics project leverages machine learning to predict precious metal prices by analyzing geopolitical events, market sentiment, and historical price data. The model focuses on gold, silver, and the gold-to-silver ratio (GSR) using Random Forest regression algorithms.</p>
+            <p>By incorporating news sentiment analysis and geopolitical factors, the system aims to identify price movements driven by global events, making it a tool for understanding how external news impacts commodity markets.</p>
+        </div>
+
+        <div class="section">
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Multi-Commodity Prediction:</strong> Predicts prices for gold, silver, and the GSR simultaneously</li>
+                <li><strong>News Integration:</strong> Incorporates news sentiment and geopolitical events as features</li>
+                <li><strong>Random Forest Modeling:</strong> Uses ensemble learning for robust price predictions</li>
+                <li><strong>Feature Engineering:</strong> Develops meaningful features from raw market and news data</li>
+                <li><strong>Model Evaluation:</strong> Comprehensive metrics including MAE, RMSE, and R² scores</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Methodology</h2>
+            <p><strong>Data Sources:</strong> Historical commodity price data, news sentiment feeds, and geopolitical indicators</p>
+            <p><strong>Features:</strong> Model includes technical indicators, news sentiment scores, geopolitical event classifications, and historical price patterns.</p>
+            <p><strong>Model Architecture:</strong> Random Forest regressor with hyperparameter tuning optimized for prediction accuracy across all three prediction targets.</p>
+            <p><strong>Validation:</strong> Time-series cross-validation to ensure the model generalizes well to unseen market data.</p>
+        </div>
+
+        <div class="section">
+            <h2>Technologies Used</h2>
+            <div class="tech-stack">
+                <div class="tech-item">Python</div>
+                <div class="tech-item">Pandas</div>
+                <div class="tech-item">Scikit-Learn</div>
+                <div class="tech-item">Random Forest</div>
+                <div class="tech-item">News APIs</div>
+                <div class="tech-item">Data Analysis</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Insights & Outcomes</h2>
+            <p>This project demonstrates how external news and geopolitical events can be quantified and used to improve commodity price predictions. The Random Forest model captures non-linear relationships between global events and precious metal prices, providing a data-driven approach to understanding market movements.</p>
+            <p>The integration of news sentiment shows promising results in identifying when commodity prices are likely to experience significant shifts in response to global developments.</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
